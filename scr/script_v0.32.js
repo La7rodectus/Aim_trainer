@@ -31,6 +31,26 @@ class CanvasClass {
     this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
   }
 
+  radiusAnimationControl(maxR) {
+    this.circlesXYandColor.forEach(circle => {
+      if (circle.r === 2) {
+        circle.inc = true;
+      }
+      if (circle.r === maxR) {
+        circle.inc = false;
+      }
+      if (circle.inc === false) {
+        circle.r -= 1;
+      }
+      if (circle.inc === true) {
+        circle.r += 1;
+      }
+      if (circle.r < 3) {
+        this.deleteCircle(circle);
+      }
+    });
+  }
+
   findObjIndex(obj) {
     for (let i = 0; i < this.circlesXYandColor.length; i++) {
       if (this.circlesXYandColor[i].x === obj.x &&
@@ -129,7 +149,6 @@ class CanvasClass {
     const colorBorder = this.circlesStyles.colorborder;
     this.circlesXYandColor.push({ x, y, color, colorBorder, r });
     this.usedColors.push(color);
-    //print(color, 'доданий колір');
   }
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -150,17 +169,19 @@ class CanvasClass {
     this.removeColor(target.color);
   }
 }
+
 // menu class
 class GameMenu {
   constructor(frontCanvas, backCanvas) {
     this.front = frontCanvas;
     this.back = backCanvas;
-    this.TIMER = 400;
+    this.TIMER = 700;
     this.gameMode = 'challenge';
     this.dif = 100;
     this.maxR = 40;
     this.startBTN = 0;
   }
+
   startBTNActivation() {
     if (this.startBTN === 0) {
       this.startBTN = 1;
@@ -169,29 +190,41 @@ class GameMenu {
     }
     this.play();
   }
+
+  
   circlesGeneratorChallenge() {
-    const gen = setInterval(() => {
+    const generate = setInterval(() => {
       if (this.startBTN === 0) {
-        clearInterval(gen);
+        clearInterval(generate);
       }
       const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
       const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
       const backColor = this.back.getColorCode();
       this.back.setCircleStyle(backColor, backColor);
-      this.front.addArc(x, y, 40);
-      this.back.addArc(x, y, 40);
+      this.front.addArc(x, y);
+      this.back.addArc(x, y);
       this.back.draw();
       this.front.draw();
     }, this.TIMER);
+  }
 
-
-
+  animateCircels() {
+    const animate = setInterval(() => {
+      if (this.startBTN === 0) {
+        clearInterval(animate);
+      }
+      this.back.radiusAnimationControl(this.maxR);
+      this.front.radiusAnimationControl(this.maxR);
+      this.back.draw();
+      this.front.draw();
+    }, 50);
   }
 
   play() {
     if (this.startBTN === 1) {
       if (this.gameMode === 'challenge') {
         this.circlesGeneratorChallenge();
+        this.animateCircels();
       }
     }
 
