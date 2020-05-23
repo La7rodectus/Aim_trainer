@@ -19,12 +19,12 @@ function print(data, discriptoin) {
 
 
 //canvas class
-
 class CanvasClass {
   constructor(canvasId) {
     // eslint-disable-next-line no-undef
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d');
+    this.canvasId = canvasId;
     this.ctx.globalAlpha = 1;
     this.circlesXYandColor = new Array();
     this.circlesStyles = { colorborder: '#00FF00', colorfill: '#eb4034' };
@@ -39,6 +39,10 @@ class CanvasClass {
         return i;
       }
     }
+  }
+
+  getId() {
+    return this.canvasId;
   }
 
   removeCircle(obj) {
@@ -83,7 +87,6 @@ class CanvasClass {
     return { x: x - bbox.left * (this.canvas.width / bbox.width),
       y: y - bbox.top * (this.canvas.height / bbox.height) };
   }
-
 
   getColorCode() {
     const r = getRandomIntInclusive(0, 255);
@@ -141,40 +144,76 @@ class CanvasClass {
       this.ctx.fill();
     });
   }
+
   deleteCircle(target) {
     this.removeCircle(target);
     this.removeColor(target.color);
   }
 }
+// menu class
+class GameMenu {
+  constructor(frontCanvas, backCanvas) {
+    this.front = frontCanvas;
+    this.back = backCanvas;
+    this.TIMER = 400;
+    this.gameMode = 'challenge';
+    this.dif = 100;
+    this.maxR = 40;
+    this.startBTN = 0;
+  }
+  startBTNActivation() {
+    if (this.startBTN === 0) {
+      this.startBTN = 1;
+    } else {
+      this.startBTN = 0;
+    }
+    this.play();
+  }
+  circlesGeneratorChallenge() {
+    const gen = setInterval(() => {
+      if (this.startBTN === 0) {
+        clearInterval(gen);
+      }
+      const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
+      const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
+      const backColor = this.back.getColorCode();
+      this.back.setCircleStyle(backColor, backColor);
+      this.front.addArc(x, y, 40);
+      this.back.addArc(x, y, 40);
+      this.back.draw();
+      this.front.draw();
+    }, this.TIMER);
 
 
+
+  }
+
+  play() {
+    if (this.startBTN === 1) {
+      if (this.gameMode === 'challenge') {
+        this.circlesGeneratorChallenge();
+      }
+    }
+
+  }
+}
 
 //ini
 const back = new CanvasClass('bg_canvas');
 const front = new CanvasClass('fr_canvas');
+const gameMenu = new GameMenu(front, back);
 
 
-//generator
-function circlesGenerator(front, back, maxR = 40) {
-  const x = getRandomIntInclusive(maxR, front.canvas.clientWidth - maxR);
-  const y = getRandomIntInclusive(maxR, front.canvas.clientHeight - maxR);
-  const backColor = back.getColorCode();
-  back.setCircleStyle(backColor, backColor);
-  front.addArc(x, y, 40);
-  back.addArc(x, y, 40);
-  back.draw();
-  front.draw();
-}
-//events
+
+
 front.canvas.addEventListener('click', (canvas) => {
   const target = back.checkColor(canvas);
   if (target !== undefined) {
-    //print(target.color, 'hit');
     front.deleteCircle(target);
     back.deleteCircle(target);
+    back.draw();
+    front.draw();
   }
-  circlesGenerator(front, back);
-  //print('end', '-------');
 });
 
 front.canvas.addEventListener('contextmenu', (canvas) => {
@@ -187,6 +226,7 @@ front.canvas.addEventListener('contextmenu', (canvas) => {
   const carrentColor = '#' + r.toString(16) + g.toString(16) + b.toString(16);
   print(carrentColor, 'carrent color');
 });
+
 
 
 

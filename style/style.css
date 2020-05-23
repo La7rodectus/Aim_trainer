@@ -36,7 +36,14 @@ body{
 }
 
 
-
+#start-btn {
+    border-radius: 5%;
+    width: 200px;
+    height: 100px;
+    outline: none;
+    color: brown;
+    background-color: moccasin;
+}
 
 
 
