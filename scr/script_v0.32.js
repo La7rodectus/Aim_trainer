@@ -181,6 +181,7 @@ class GameMenu {
     this.dif = 50;
     this.maxR = 40;
     this.startBTN = 0;
+    this.gameTimer = undefined;
   }
 
   startBTNActivation() {
@@ -196,21 +197,21 @@ class GameMenu {
   circlesGeneratorChallenge() {
     if (this.startBTN === 1) {
       setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
-    }
-    const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
-    const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
-    const backColor = this.back.getColorCode();
-    this.back.setCircleStyle(backColor, backColor);
-    this.front.addArc(x, y);
-    this.back.addArc(x, y);
-    this.back.draw();
-    this.front.draw();
-    if (this.carrentTimer > this.dif + 200) {
-      if (this.carrentTimer > 700) {
-        this.carrentTimer -= this.dif;
-      }
-      if (this.carrentTimer <= 700) {
-        this.carrentTimer -= this.dif / 3;
+      const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
+      const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
+      const backColor = this.back.getColorCode();
+      this.back.setCircleStyle(backColor, backColor);
+      this.front.addArc(x, y);
+      this.back.addArc(x, y);
+      this.back.draw();
+      this.front.draw();
+      if (this.carrentTimer > this.dif + 250) {
+        if (this.carrentTimer > 700) {
+          this.carrentTimer -= this.dif;
+        }
+        if (this.carrentTimer <= 700) {
+          this.carrentTimer -= this.dif / 3;
+        }
       }
     }
   }
@@ -229,6 +230,7 @@ class GameMenu {
   refreshCanvas60() {
     const refresh = setInterval(() => {
       if (this.startBTN === 0) {
+        clearTimeout(this.gameTimer);
         clearInterval(refresh);
       }
       this.back.draw();
@@ -239,10 +241,10 @@ class GameMenu {
   play() {
     if (this.startBTN === 1) {
       if (this.gameMode === 'challenge') {
-        setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
-        this.animateCircels();
+        this.gameTimer = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
       }
     }
+    this.animateCircels();
   }
 
 }
