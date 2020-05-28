@@ -1,4 +1,3 @@
-
 'use strict';
 /* eslint-disable max-len */
 
@@ -8,15 +7,13 @@ function getRandomIntInclusive(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 function print(data, discriptoin) {
   // eslint-disable-next-line no-undef
   const datawrap = document.getElementById('text');
   const string = data.toString();
-  datawrap.innerHTML = string + ' ____' + discriptoin + '<br>';
-
-
+  datawrap.innerHTML = string + '____' + discriptoin + '<br>';
 }
-
 
 //canvas class
 class CanvasClass {
@@ -140,7 +137,6 @@ class CanvasClass {
     const b = pixelColorData[2];
     const carrentColor = '#' + r.toString(16) + g.toString(16) + b.toString(16);
     const res = this.findCircleByColor(carrentColor);
-    print(carrentColor, 'this.checkColor');
     return res;
   }
 
@@ -170,26 +166,96 @@ class CanvasClass {
   }
 }
 
+//timer
+class GameTimer {
+  constructor(timerDivId) {
+    // eslint-disable-next-line no-undef
+    this.timerDiv = document.getElementById(timerDivId);
+    this.m = 0;
+    this.s = 0;
+    this.h = 0;
+    this.startTime = 0;
+    this.pauseTime = 0;
+    this.pauseTimeDiff = 0;
+    this.interval = undefined;
+  }
+
+  init() {
+    this.interval = setInterval(this.tick.bind(this), 1000);
+    this.startTime = new Date().getTime();
+  }
+
+  stop() {
+    clearInterval(this.interval);
+    this.reset();
+    this.startTime = 0;
+    this.pauseTime = 0;
+    this.pauseTimeDiff = 0;
+  }
+
+  pause() {
+    clearInterval(this.interval);
+    this.pauseTime = new Date().getTime();
+  }
+
+  resume() {
+    if (this.startTime === 0) {
+      this.init();
+    } else {
+      this.pauseTimeDiff = 1000 - (this.pauseTime - this.startTime) % 1000;
+      setTimeout(() => { this.tick(); this.init(); }, this.pauseTimeDiff);
+    }
+  }
+
+  reset() {
+    this.s = 0;
+    this.m = 0;
+    this.h = 0;
+  }
+
+  tick() {
+    this.s++;
+    if (this.s >= 60) {
+      this.s = 0;
+      this.m++;
+    }
+    if (this.m >= 60) {
+      this.m = 0;
+      this.h++;
+    }
+    const ds = this.s.toString().length === 2 ? this.s : '0' + this.s;
+    const dm = this.m.toString().length === 2 ? this.m : '0' + this.m;
+    //const dh = this.h.toString().length === 2 ? this.h : '0' + this.h;
+    if (this.h >= 24) {
+      this.reset();
+    }
+    this.timerDiv.innerText = /*dh + ':' + */dm + ':' + ds;
+  }
+}
+
 // menu class
 class GameMenu {
-  constructor(frontCanvas, backCanvas) {
+  constructor(frontCanvas, backCanvas, gameTimer) {
     this.front = frontCanvas;
     this.back = backCanvas;
+    this.gameTimer = gameTimer;
     this.TIMER = 2000;
     this.carrentTimer = this.TIMER;
     this.gameMode = 'challenge';
     this.dif = 50;
     this.maxR = 40;
     this.startBTN = 0;
-    this.gameTimer = undefined;
+    this.generatorInterval = undefined;
   }
 
   startBTNActivation() {
     if (this.startBTN === 0) {
       this.startBTN = 1;
       this.play();
+      this.gameTimer.resume();
     } else {
       this.startBTN = 0;
+      this.gameTimer.pause();
     }
   }
 
@@ -230,7 +296,7 @@ class GameMenu {
   refreshCanvas60() {
     const refresh = setInterval(() => {
       if (this.startBTN === 0) {
-        clearTimeout(this.gameTimer);
+        clearTimeout(this.generatorInterval);
         clearInterval(refresh);
       }
       this.back.draw();
@@ -241,7 +307,7 @@ class GameMenu {
   play() {
     if (this.startBTN === 1) {
       if (this.gameMode === 'challenge') {
-        this.gameTimer = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
+        this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
       }
     }
     this.animateCircels();
@@ -249,21 +315,22 @@ class GameMenu {
 
 }
 
-//ini
+//class ini
 const back = new CanvasClass('bg_canvas');
 const front = new CanvasClass('fr_canvas');
-const gameMenu = new GameMenu(front, back);
+const gameTimer = new GameTimer('timerText');
+const gameMenu = new GameMenu(front, back, gameTimer);
 
-
-
-
+//event Listeners
 front.canvas.addEventListener('click', (canvas) => {
   const target = back.checkColor(canvas);
-  if (target !== undefined) {
+  if (target) {
     front.deleteCircle(target);
     back.deleteCircle(target);
     back.draw();
     front.draw();
+    const data = new Date();
+    print(data.getTime(), 'ff');
   }
 });
 

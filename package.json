@@ -1,0 +1,19 @@
+{
+  "name": "aim_trainer",
+  "version": "0.33.0",
+  "description": "Site for AIM training",
+  "main": "index.html",
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/La7rodectus/Aim_trainer.git"
+  },
+  "author": "La7rodectus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/La7rodectus/Aim_trainer/issues"
+  },
+  "homepage": "https://github.com/La7rodectus/Aim_trainer#readme"
+}
