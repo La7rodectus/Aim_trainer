@@ -164,13 +164,38 @@ class CanvasClass {
     this.removeCircle(target);
     this.removeColor(target.color);
   }
+
+  reset() {
+    this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+    this.circlesXYandColor = new Array();
+    this.circlesStyles = { colorborder: '#00FF00', colorfill: '#eb4034' };
+    this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
+  }
+}
+
+//player
+class Player {
+  constructor() {
+    this.health = null;
+    this.hits = new Array();
+  }
+
+  init(gameMode) {
+    if (gameMode === 'challenge') {
+      this.health = 3;
+    }
+  }
+
+  addHit(x, y, target) {
+    this.hits.push({ x, y, target });
+  }
 }
 
 //timer
 class GameTimer {
-  constructor(timerDivId) {
+  constructor(timerParId) {
     // eslint-disable-next-line no-undef
-    this.timerDiv = document.getElementById(timerDivId);
+    this.timerPar = document.getElementById(timerParId);
     this.m = 0;
     this.s = 0;
     this.h = 0;
@@ -191,6 +216,7 @@ class GameTimer {
     this.startTime = 0;
     this.pauseTime = 0;
     this.pauseTimeDiff = 0;
+    this.timerPar.innerText = '00:00';
   }
 
   pause() {
@@ -229,13 +255,14 @@ class GameTimer {
     if (this.h >= 24) {
       this.reset();
     }
-    this.timerDiv.innerText = /*dh + ':' + */dm + ':' + ds;
+    this.timerPar.innerText = /*dh + ':' + */dm + ':' + ds;
   }
 }
 
-// menu class
-class GameMenu {
-  constructor(frontCanvas, backCanvas, gameTimer) {
+// game class
+class Game {
+  constructor(frontCanvas, backCanvas, gameTimer, player) {
+    this.currentPlayer = player;
     this.front = frontCanvas;
     this.back = backCanvas;
     this.gameTimer = gameTimer;
@@ -259,6 +286,23 @@ class GameMenu {
     }
   }
 
+  rulesCheck() {
+    if (this.currentPlayer.health === 0) {
+      this.gameReset();
+    }
+  }
+
+  gameReset() {
+    this.startBTN = 0;
+    this.carrentTimer = this.TIMER;
+    this.back.reset();
+    this.front.reset();
+    this.gameTimer.stop();
+  }
+
+  stopBTNActivation() {
+    this.gameReset();
+  }
 
   circlesGeneratorChallenge() {
     if (this.startBTN === 1) {
@@ -305,6 +349,9 @@ class GameMenu {
   }
 
   play() {
+    if (!this.currentPlayer.health) {
+      this.currentPlayer.init(this.gameMode);
+    }
     if (this.startBTN === 1) {
       if (this.gameMode === 'challenge') {
         this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
@@ -313,28 +360,37 @@ class GameMenu {
     this.animateCircels();
   }
 
+  shot(canvas) {
+    const target = this.back.checkColor(canvas);
+    if (target) {
+      const carrentX = this.back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).x;
+      const carrentY = this.back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).y;
+      this.front.deleteCircle(target);
+      this.back.deleteCircle(target);
+      this.back.draw();
+      this.front.draw();
+      this.currentPlayer.addHit(carrentX, carrentY, target);
+    } else {
+      this.currentPlayer.health -= 1;
+      this.rulesCheck();
+    }
+  }
+
 }
 
 //class ini
 const back = new CanvasClass('bg_canvas');
 const front = new CanvasClass('fr_canvas');
 const gameTimer = new GameTimer('timerText');
-const gameMenu = new GameMenu(front, back, gameTimer);
+const player = new Player();
+const game = new Game(front, back, gameTimer, player);
 
 //event Listeners
-front.canvas.addEventListener('click', (canvas) => {
-  const target = back.checkColor(canvas);
-  if (target) {
-    front.deleteCircle(target);
-    back.deleteCircle(target);
-    back.draw();
-    front.draw();
-    const data = new Date();
-    print(data.getTime(), 'ff');
-  }
+front.canvas.addEventListener('click', canvas => {
+  game.shot(canvas);
 });
 
-front.canvas.addEventListener('contextmenu', (canvas) => {
+front.canvas.addEventListener('contextmenu', canvas => {
   const carrentX = back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).x;
   const carrentY = back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).y;
   const pixelColorData = back.ctx.getImageData(carrentX, carrentY, 1, 1).data;
