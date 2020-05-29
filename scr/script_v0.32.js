@@ -170,7 +170,6 @@ class CanvasClass {
   reset() {
     this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
     this.circlesXYandColor = new Array();
-    this.circlesStyles = { colorborder: '#00FF00', colorfill: '#eb4034' };
     this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
     this.lost = 0;
   }
@@ -296,6 +295,7 @@ class Game {
 
   startBTNActivation() {
     if (this.startBTN === 0) {
+      this.gameOverScreenHide();
       this.startBTN = 1;
       this.play();
       this.gameTimer.resume();
@@ -320,6 +320,9 @@ class Game {
   gameOverScreenShow() {
     const overScreen = document.getElementById('game-over');
     overScreen.style.zIndex = 5;
+    const index = this.currentPlayer.BestTimes.length - 1;
+    const lastTime = this.currentPlayer.BestTimes[index];
+    overScreen.innerHTML = 'Game Over <br>' + lastTime;
     overScreen.classList.add('show');
   }
 
@@ -399,6 +402,22 @@ class Game {
       }
     }
     this.animateCircels();
+  }
+
+  setFrontColorStyle() {
+    const inputFillHex = document.getElementById('colorfillinput');
+    const inputBorderHex = document.getElementById('colorborderinput');
+
+    if (inputBorderHex.value.length !== 7 || inputFillHex.value.length !== 7) {
+      alert('Hex color code must include 7 symbols');
+    } else if (inputBorderHex.value.split('')[0] !== '#' || inputFillHex.value.split('')[0] !== '#') {
+      alert('First symbol must be \' # \' ');
+    } else {
+      this.front.setCircleStyle(inputBorderHex, inputFillHex);
+      inputBorderHex.value = '';
+      inputFillHex.value = '';
+    }
+
   }
 
   shot(canvas) {

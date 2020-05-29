@@ -1,8 +1,25 @@
 body{
     display: flex;
-    justify-content: center;
+    justify-content: stretch;
     align-content: center;
 
+}
+
+.form-cell {
+    width: 100%;
+}
+
+#confirm-btn {
+    background-color:  mediumspringgreen;
+    border-color: mediumspringgreen;
+    border-radius: 5%;
+    height: 40px;
+}
+
+.menu {
+    left: 0px;
+    margin: 10px;
+    margin-left: 0px;
 }
 
 .shoot_wraper {
@@ -47,7 +64,7 @@ body{
     height: 100px;
     outline: none;
     color: brown;
-    background-color: moccasin;
+    background-color:  mediumspringgreen;
 
 }
 
@@ -94,6 +111,7 @@ body{
 #game-over {
     display: inline-flex;
     align-items: center;
+    text-align: center;
     justify-content: center;
     position: absolute;
     z-index: 1;
@@ -104,6 +122,10 @@ body{
     text-decoration-color: firebrick;
     font-family: gameover;
     font-size: 50px;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
     opacity: 0;
     background-color: darkturquoise;
 }

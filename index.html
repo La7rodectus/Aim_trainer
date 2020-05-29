@@ -8,12 +8,24 @@
     <div class="menu">
       <input type="button" value="Start / Pause" class="menu-btn" name="main-menu" onclick="game.startBTNActivation();">
       <input type="button" value="Stop" class="menu-btn" name="main-menu" onclick="game.stopBTNActivation();">
+
+       <form name="castom" method="post" action="game.setFrontColorStyle();">
+        <p>Enter circle border color<br>
+          <input id="colorborderinput" class="form-cell" type="text" placeholder="hex color code" size="40">
+         </p>
+         <p>Enter circle color<br>
+          <input id="colorfillinput" class="form-cell" type="text" placeholder="hex color code" size="40">
+         </p>
+        <p><input id="confirm-btn" class="form-cell" type="button" onclick="game.setFrontColorStyle();" value="Confirm"></p>
+       </form>
     </div>
     <div class="shoot_wraper">
       <canvas id="bg_canvas"></canvas>
       <canvas id="fr_canvas"></canvas>
       <div id="timer"><p id="timerText">00:00</p></div>
-      <div id="game-over">Game Over</div>
+      <div id="game-over">
+        Game Over
+      </div>
     </div>
     <div id="text"></div>
     <script src="./scr/script_v0.32.js"></script>
