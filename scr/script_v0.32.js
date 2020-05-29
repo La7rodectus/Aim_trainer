@@ -26,6 +26,7 @@ class CanvasClass {
     this.circlesXYandColor = new Array();
     this.circlesStyles = { colorborder: '#00FF00', colorfill: '#eb4034' };
     this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
+    this.lost = 0;
   }
 
   radiusAnimationControl(maxR) {
@@ -44,6 +45,7 @@ class CanvasClass {
       }
       if (circle.r < 3) {
         this.deleteCircle(circle);
+        this.lost += 1;
       }
     });
   }
@@ -170,6 +172,7 @@ class CanvasClass {
     this.circlesXYandColor = new Array();
     this.circlesStyles = { colorborder: '#00FF00', colorfill: '#eb4034' };
     this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
+    this.lost = 0;
   }
 }
 
@@ -178,6 +181,15 @@ class Player {
   constructor() {
     this.health = null;
     this.hits = new Array();
+    this.BestTimes = new Array();
+  }
+
+  saveTime(time) {
+    this.BestTimes.push(time);
+  }
+
+  playerHealthReset() {
+    this.health = null;
   }
 
   init(gameMode) {
@@ -208,6 +220,12 @@ class GameTimer {
   init() {
     this.interval = setInterval(this.tick.bind(this), 1000);
     this.startTime = new Date().getTime();
+  }
+
+  getLastTime() {
+    const ds = this.s.toString().length === 2 ? this.s : '0' + this.s;
+    const dm = this.m.toString().length === 2 ? this.m : '0' + this.m;
+    return dm + ':' + ds;
   }
 
   stop() {
@@ -273,6 +291,7 @@ class Game {
     this.maxR = 40;
     this.startBTN = 0;
     this.generatorInterval = undefined;
+    this.missed = 0;
   }
 
   startBTNActivation() {
@@ -287,7 +306,12 @@ class Game {
   }
 
   rulesCheck() {
+    if (this.back.lost !== this.missed) {
+      this.missed++;
+      this.currentPlayer.health--;
+    }
     if (this.currentPlayer.health === 0) {
+      this.currentPlayer.saveTime(this.gameTimer.getLastTime());
       this.gameReset();
     }
   }
@@ -298,6 +322,8 @@ class Game {
     this.back.reset();
     this.front.reset();
     this.gameTimer.stop();
+    this.currentPlayer.playerHealthReset();
+    this.missed = 0;
   }
 
   stopBTNActivation() {
@@ -333,6 +359,7 @@ class Game {
       }
       this.back.radiusAnimationControl(this.maxR);
       this.front.radiusAnimationControl(this.maxR);
+      this.rulesCheck();
     }, 50);
     this.refreshCanvas60();
   }
