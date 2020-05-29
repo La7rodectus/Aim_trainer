@@ -26,7 +26,7 @@ body{
 
 #fr_canvas {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     height: 100%;
     opacity: 1;
@@ -57,7 +57,7 @@ body{
     justify-content: center;
     width: 40%;
     height: 20%;
-    z-index: 1;
+    z-index: 2;
     opacity: 0.3;
     font-family: 'Courier New', Courier, monospace;
     font-size: 15vh;
@@ -70,5 +70,41 @@ body{
     -webkit-user-select: none;
     user-select: none;
     color: mediumspringgreen;
+}
+
+@font-face {
+    font-family: gameover;
+    src: url(fonts/18918.ttf);
+}
+
+.show {
+    display: block;
+    animation: showBlock 1s linear forwards;
+}
+
+@keyframes showBlock {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#game-over {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-color: salmon;
+    border-style: dotted;
+    text-decoration-color: firebrick;
+    font-family: gameover;
+    font-size: 50px;
+    opacity: 0;
+    background-color: darkturquoise;
 }
 

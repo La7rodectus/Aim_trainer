@@ -313,7 +313,20 @@ class Game {
     if (this.currentPlayer.health === 0) {
       this.currentPlayer.saveTime(this.gameTimer.getLastTime());
       this.gameReset();
+      this.gameOverScreenShow();
     }
+  }
+
+  gameOverScreenShow() {
+    const overScreen = document.getElementById('game-over');
+    overScreen.style.zIndex = 5;
+    overScreen.classList.add('show');
+  }
+
+  gameOverScreenHide() {
+    const overScreen = document.getElementById('game-over');
+    overScreen.style.zIndex = 1;
+    overScreen.classList.remove('show');
   }
 
   gameReset() {
@@ -324,6 +337,7 @@ class Game {
     this.gameTimer.stop();
     this.currentPlayer.playerHealthReset();
     this.missed = 0;
+    this.gameOverScreenHide();
   }
 
   stopBTNActivation() {
@@ -413,9 +427,7 @@ const player = new Player();
 const game = new Game(front, back, gameTimer, player);
 
 //event Listeners
-front.canvas.addEventListener('click', canvas => {
-  game.shot(canvas);
-});
+front.canvas.addEventListener('click', game.shot.bind(game));
 
 front.canvas.addEventListener('contextmenu', canvas => {
   const carrentX = back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).x;
