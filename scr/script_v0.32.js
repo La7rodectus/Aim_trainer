@@ -180,11 +180,12 @@ class Player {
   constructor() {
     this.health = null;
     this.hits = new Array();
-    this.BestTimes = new Array();
+    this.gameSessions = new Array();
+    this.hitsPerSecond = new Array();
   }
 
-  saveTime(time) {
-    this.BestTimes.push(time);
+  saveGameSessions(time, hits) {
+    this.gameSessions.push({ time, hits, graphHits: this.hits });
   }
 
   playerHealthReset() {
@@ -224,7 +225,7 @@ class GameTimer {
   getLastTime() {
     const ds = this.s.toString().length === 2 ? this.s : '0' + this.s;
     const dm = this.m.toString().length === 2 ? this.m : '0' + this.m;
-    return dm + ':' + ds;
+    return { m: dm, s: ds };
   }
 
   stop() {
@@ -283,23 +284,38 @@ class Game {
     this.front = frontCanvas;
     this.back = backCanvas;
     this.gameTimer = gameTimer;
-    this.TIMER = 2000;
-    this.carrentTimer = this.TIMER;
+    this.carrentTimer = 1500;
     this.gameMode = 'challenge';
     this.dif = 50;
     this.maxR = 40;
     this.startBTN = 0;
     this.generatorInterval = undefined;
     this.missed = 0;
+    this.hits = 0;
+    this.gameStage = 0; // ['stop', 'pause', 'resume', 'play', 'gameover']
+  }
+
+  showPauseScreen() {
+    const pauseScreen = document.getElementById('pause');
+    pauseScreen.style.display = 'inline-flex';
+    pauseScreen.classList.add('show');
+  }
+
+  hidePauseScreen() {
+    const pauseScreen = document.getElementById('pause');
+    pauseScreen.style.display = 'none';
+    pauseScreen.classList.remove('show');
   }
 
   startBTNActivation() {
     if (this.startBTN === 0) {
+      this.hidePauseScreen();
       this.gameOverScreenHide();
       this.startBTN = 1;
       this.play();
       this.gameTimer.resume();
     } else {
+      this.showPauseScreen();
       this.startBTN = 0;
       this.gameTimer.pause();
     }
@@ -311,7 +327,7 @@ class Game {
       this.currentPlayer.health--;
     }
     if (this.currentPlayer.health === 0) {
-      this.currentPlayer.saveTime(this.gameTimer.getLastTime());
+      this.currentPlayer.saveGameSessions(this.gameTimer.getLastTime(), this.hits);
       this.gameReset();
       this.gameOverScreenShow();
     }
@@ -320,9 +336,15 @@ class Game {
   gameOverScreenShow() {
     const overScreen = document.getElementById('game-over');
     overScreen.style.zIndex = 5;
-    const index = this.currentPlayer.BestTimes.length - 1;
-    const lastTime = this.currentPlayer.BestTimes[index];
-    overScreen.innerHTML = 'Game Over <br>' + lastTime;
+    const index = this.currentPlayer.gameSessions.length - 1;
+    const lastTime = this.currentPlayer.gameSessions[index];
+    let speed = lastTime.hits / (lastTime.time.m * 60 + lastTime.time.s);
+    if (speed !== 0) {
+      speed = '<br> Hits/sec = ' + speed.toFixed(3);
+    } else {
+      speed = '<br> not ur best try';
+    }
+    overScreen.innerHTML = 'Game Over <br>' + lastTime.time.m + ':' + lastTime.time.s + speed;
     overScreen.classList.add('show');
   }
 
@@ -334,12 +356,13 @@ class Game {
 
   gameReset() {
     this.startBTN = 0;
-    this.carrentTimer = this.TIMER;
+    this.carrentTimer = 1500;
     this.back.reset();
     this.front.reset();
     this.gameTimer.stop();
     this.currentPlayer.playerHealthReset();
     this.missed = 0;
+    this.hits = 0;
     this.gameOverScreenHide();
   }
 
@@ -407,12 +430,27 @@ class Game {
   setFrontColorStyle() {
     const inputFillHex = document.getElementById('colorfillinput');
     const inputBorderHex = document.getElementById('colorborderinput');
-
-    if (inputBorderHex.value.length !== 7 || inputFillHex.value.length !== 7) {
-      alert('Hex color code must include 7 symbols');
-    } else if (inputBorderHex.value.split('')[0] !== '#' || inputFillHex.value.split('')[0] !== '#') {
-      alert('First symbol must be \' # \' ');
-    } else {
+    const message = document.getElementById('message');
+    const sevenSymbols = document.getElementById('seven');
+    const firstSymdol = document.getElementById('first');
+    let validarionLevel = 0;
+    message.style.display = 'block';
+    if (inputBorderHex.value.length === 7 && inputFillHex.value.length === 7) {
+      sevenSymbols.classList.add('valid');
+      sevenSymbols.classList.remove('invalid');
+      validarionLevel++;
+    }
+    if (inputBorderHex.value.split('')[0] === '#' && inputFillHex.value.split('')[0] === '#') {
+      firstSymdol.classList.add('valid');
+      firstSymdol.classList.remove('invalid');
+      validarionLevel++;
+    }
+    if (validarionLevel === 2) {
+      message.style.display = 'none';
+      sevenSymbols.classList.remove('valid');
+      firstSymdol.classList.remove('valid');
+      firstSymdol.classList.add('invalid');
+      sevenSymbols.classList.add('invalid');
       this.front.setCircleStyle(inputBorderHex, inputFillHex);
       inputBorderHex.value = '';
       inputFillHex.value = '';
@@ -430,8 +468,9 @@ class Game {
       this.back.draw();
       this.front.draw();
       this.currentPlayer.addHit(carrentX, carrentY, target);
+      this.hits++;
     } else {
-      this.currentPlayer.health -= 1;
+      this.currentPlayer.health--;
       this.rulesCheck();
     }
   }
