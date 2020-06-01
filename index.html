@@ -5,9 +5,10 @@
     <link rel="stylesheet" href="./style/style.css">
   </head>
   <body>
+    <script type="module" src="./scr/script.js"></script>
     <div class="menu">
-      <input type="button" value="Start / Pause" class="menu-btn" name="main-menu" onclick="game.startBTNActivation();">
-      <input type="button" value="Stop" class="menu-btn" name="main-menu" onclick="game.stopBTNActivation();">
+      <input type="button" id="startStop" value="Start / Pause" class="menu-btn" name="main-menu">
+      <input type="button" id="stop" value="Stop" class="menu-btn" name="main-menu">
 
        <form name="castom" method="post">
         <p>Enter circle border color<br>
@@ -16,7 +17,7 @@
          <p>Enter circle color<br>
           <input id="colorfillinput" class="form-cell" type="text" title="Must contain 7 symbols and first one must be #" maxlength="7" placeholder="hex color code" size="40">
          </p>
-        <p><input id="confirm-btn" class="form-cell" type="button" onclick="game.setFrontColorStyle();" value="Confirm"></p>
+        <p><input id="confirm-btn" class="form-cell" type="button" value="Confirm"></p>
        </form>
        <div id="message">
         <h3>Hex color code must include:</h3>
@@ -32,7 +33,6 @@
       <div id="pause">Pause</div>
     </div>
     <div id="text"></div>
-    <script src="./scr/script_v0.32.js"></script>
     </body>
 </html>
 
