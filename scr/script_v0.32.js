@@ -8,17 +8,9 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function print(data, discriptoin) {
-  // eslint-disable-next-line no-undef
-  const datawrap = document.getElementById('text');
-  const string = data.toString();
-  datawrap.innerHTML = string + '____' + discriptoin + '<br>';
-}
-
 //canvas class
 class CanvasClass {
   constructor(canvasId) {
-    // eslint-disable-next-line no-undef
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d');
     this.canvasId = canvasId;
@@ -206,7 +198,6 @@ class Player {
 //timer
 class GameTimer {
   constructor(timerParId) {
-    // eslint-disable-next-line no-undef
     this.timerPar = document.getElementById(timerParId);
     this.m = 0;
     this.s = 0;
@@ -280,6 +271,8 @@ class GameTimer {
 // game class
 class Game {
   constructor(frontCanvas, backCanvas, gameTimer, player) {
+    this.pauseScreen = document.getElementById('pause');
+    this.overScreen = document.getElementById('game-over');
     this.currentPlayer = player;
     this.front = frontCanvas;
     this.back = backCanvas;
@@ -295,16 +288,18 @@ class Game {
     this.gameStage = 0; // ['stop', 'pause', 'resume', 'play', 'gameover']
   }
 
+  ini() {
+    this.front.canvas.onclick = this.shot.bind(this);
+  }
+
   showPauseScreen() {
-    const pauseScreen = document.getElementById('pause');
-    pauseScreen.style.display = 'inline-flex';
-    pauseScreen.classList.add('show');
+    this.pauseScreen.style.display = 'inline-flex';
+    this.pauseScreen.classList.add('show');
   }
 
   hidePauseScreen() {
-    const pauseScreen = document.getElementById('pause');
-    pauseScreen.style.display = 'none';
-    pauseScreen.classList.remove('show');
+    this.pauseScreen.style.display = 'none';
+    this.pauseScreen.classList.remove('show');
   }
 
   startBTNActivation() {
@@ -314,7 +309,12 @@ class Game {
       this.startBTN = 1;
       this.play();
       this.gameTimer.resume();
+      this.pauseScreen.onclick = this.startBTNActivation.bind(this);
+      setTimeout(() => {
+        this.front.canvas.onmouseleave = this.mouseOutIvent.bind(this);
+      }, 1000);
     } else {
+      this.front.canvas.removeAttribute('onmouseleave');
       this.showPauseScreen();
       this.startBTN = 0;
       this.gameTimer.pause();
@@ -334,8 +334,7 @@ class Game {
   }
 
   gameOverScreenShow() {
-    const overScreen = document.getElementById('game-over');
-    overScreen.style.zIndex = 5;
+    this.overScreen.style.zIndex = 5;
     const index = this.currentPlayer.gameSessions.length - 1;
     const lastTime = this.currentPlayer.gameSessions[index];
     let speed = lastTime.hits / (lastTime.time.m * 60 + lastTime.time.s);
@@ -344,14 +343,13 @@ class Game {
     } else {
       speed = '<br> not ur best try';
     }
-    overScreen.innerHTML = 'Game Over <br>' + lastTime.time.m + ':' + lastTime.time.s + speed;
-    overScreen.classList.add('show');
+    this.overScreen.innerHTML = 'Game Over <br>' + lastTime.time.m + ':' + lastTime.time.s + speed;
+    this.overScreen.classList.add('show');
   }
 
   gameOverScreenHide() {
-    const overScreen = document.getElementById('game-over');
-    overScreen.style.zIndex = 1;
-    overScreen.classList.remove('show');
+    this.overScreen.style.zIndex = 1;
+    this.overScreen.classList.remove('show');
   }
 
   gameReset() {
@@ -370,6 +368,12 @@ class Game {
     this.gameReset();
   }
 
+  mouseOutIvent() {
+    if (this.startBTN === 1) {
+      setTimeout(this.startBTNActivation.bind(this), 500);
+    }
+  }
+
   circlesGeneratorChallenge() {
     if (this.startBTN === 1) {
       setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
@@ -386,7 +390,7 @@ class Game {
           this.carrentTimer -= this.dif;
         }
         if (this.carrentTimer <= 700) {
-          this.carrentTimer -= this.dif / 3;
+          this.carrentTimer -= this.dif / 8;
         }
       }
     }
@@ -405,14 +409,12 @@ class Game {
   }
 
   refreshCanvas60() {
-    const refresh = setInterval(() => {
-      if (this.startBTN === 0) {
-        clearTimeout(this.generatorInterval);
-        clearInterval(refresh);
-      }
-      this.back.draw();
-      this.front.draw();
-    }, 16);
+    if (this.startBTN === 0) {
+      window.cancelAnimationFrame(this);
+    }
+    this.back.draw();
+    this.front.draw();
+    window.requestAnimationFrame(this.refreshCanvas60.bind(this));
   }
 
   play() {
@@ -451,7 +453,7 @@ class Game {
       firstSymdol.classList.remove('valid');
       firstSymdol.classList.add('invalid');
       sevenSymbols.classList.add('invalid');
-      this.front.setCircleStyle(inputBorderHex, inputFillHex);
+      this.front.setCircleStyle(inputBorderHex.value, inputFillHex.value);
       inputBorderHex.value = '';
       inputFillHex.value = '';
     }
@@ -477,26 +479,15 @@ class Game {
 
 }
 
-//class ini
+//ini
 const back = new CanvasClass('bg_canvas');
 const front = new CanvasClass('fr_canvas');
 const gameTimer = new GameTimer('timerText');
 const player = new Player();
 const game = new Game(front, back, gameTimer, player);
 
-//event Listeners
-front.canvas.addEventListener('click', game.shot.bind(game));
+game.ini();
 
-front.canvas.addEventListener('contextmenu', canvas => {
-  const carrentX = back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).x;
-  const carrentY = back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).y;
-  const pixelColorData = back.ctx.getImageData(carrentX, carrentY, 1, 1).data;
-  const r = pixelColorData[0];
-  const g = pixelColorData[1];
-  const b = pixelColorData[2];
-  const carrentColor = '#' + r.toString(16) + g.toString(16) + b.toString(16);
-  print(carrentColor, 'carrent color');
-});
 
 
 
