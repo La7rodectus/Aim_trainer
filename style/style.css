@@ -14,6 +14,8 @@ body{
     border-color: aquamarine;
     border-radius: 5%;
     height: 40px;
+    font-size: 25px;
+    font-family: gameover;
 }
 
 .menu {
@@ -33,7 +35,8 @@ body{
 
 #message p {
     padding: 10px 35px;
-    font-size: 18px;
+    font-size: 25px;
+    font-family: gameover;
 }
 
 .valid {
@@ -98,6 +101,8 @@ body{
     height: 60px;
     outline: none;
     background-color:  aquamarine;
+    font-family: gameover;
+    font-size: 25px;
 
 }
 
@@ -132,12 +137,39 @@ body{
     animation: showBlock 1.5s linear forwards;
 }
 
+showToOpa1 {
+    display: block;
+    animation: showBlockto1 1.5s linear forwards;
+}
+.hide {
+    display: block;
+    animation: hideBlock 1.5s linear forwards;
+}
+
+@keyframes showBlockto1 {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 @keyframes showBlock {
     0% {
         opacity: 0;
     }
     100% {
         opacity: 0.7;
+    }
+}
+
+@keyframes hideBlock {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
     }
 }
 

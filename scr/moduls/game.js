@@ -6,6 +6,8 @@ export default class Game {
   constructor(frontCanvas, backCanvas, gameTimer, player) {
     this.pauseScreen = document.getElementById('pause');
     this.overScreen = document.getElementById('game-over');
+    this.hitSound = new Audio('./audio/hit.mp3');
+    this.missSound = new Audio('./audio/miss.mp3');
     this.currentPlayer = player;
     this.front = frontCanvas;
     this.back = backCanvas;
@@ -62,6 +64,8 @@ export default class Game {
     if (this.back.lost !== this.missed) {
       this.missed++;
       this.currentPlayer.health--;
+      this.missSound.currentTime = 0;
+      this.missSound.play();
     }
     if (this.currentPlayer.health === 0) {
       this.currentPlayer.saveGameSessions(this.gameTimer.getLastTime(), this.hits);
@@ -80,7 +84,7 @@ export default class Game {
     } else {
       speed = '<br> not ur best try';
     }
-    this.overScreen.innerHTML = 'Game Over <br>' + lastTime.time.m + ':' + lastTime.time.s + speed;
+    this.overScreen.innerHTML = 'Game Over <br>' + lastTime.time.m + ':' + lastTime.time.s + speed + '<br> shoot to try again';
     this.overScreen.classList.add('show');
   }
 
@@ -108,12 +112,10 @@ export default class Game {
 
   mouseOutIvent() {
     if (this.startBTN === 1) {
-      setTimeout(() => {
-        this.front.canvas.removeAttribute('onmouseleave');
-        this.showPauseScreen();
-        this.startBTN = 0;
-        this.gameTimer.pause();
-      }, 500);
+      this.front.canvas.removeAttribute('onmouseleave');
+      this.showPauseScreen();
+      this.startBTN = 0;
+      this.gameTimer.pause();
     }
   }
 
@@ -180,6 +182,8 @@ export default class Game {
     const firstSymdol = document.getElementById('first');
     let validarionLevel = 0;
     message.style.display = 'block';
+    message.classList.remove('hide');
+    message.classList.add('showToOpa1');
     if (inputBorderHex.value.length === 7 && inputFillHex.value.length === 7) {
       sevenSymbols.classList.add('valid');
       sevenSymbols.classList.remove('invalid');
@@ -199,6 +203,10 @@ export default class Game {
       this.front.setCircleStyle(inputBorderHex.value, inputFillHex.value);
       inputBorderHex.value = '';
       inputFillHex.value = '';
+    } else {
+      setTimeout(() => {
+        message.classList.add('hide');
+      }, 5000);
     }
 
   }
@@ -214,9 +222,13 @@ export default class Game {
       this.front.draw();
       this.currentPlayer.addHit(carrentX, carrentY, target);
       this.hits++;
+      this.hitSound.currentTime = 0;
+      this.hitSound.play();
     } else {
       this.currentPlayer.health--;
       this.rulesCheck();
+      this.missSound.currentTime = 0;
+      this.missSound.play();
     }
   }
 
