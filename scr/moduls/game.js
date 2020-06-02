@@ -14,7 +14,7 @@ export default class Game {
     this.gameTimer = gameTimer;
     this.carrentTimer = 1500;
     this.gameMode = 'challenge';
-    this.sound = true;
+    this.sound = false;
     this.dif = 50;
     this.maxR = 40;
     this.generatorInterval = undefined;
@@ -28,16 +28,16 @@ export default class Game {
     document.getElementById('startStop').onclick = this.startBTNActivation.bind(this);
     document.getElementById('stop').onclick = this.stopBTNActivation.bind(this);
     document.getElementById('confirm-btn').onclick = this.setFrontColorStyle.bind(this);
-    document.getElementById('sound-btn').onclick = this.muteBTNAction.bind(this);
+    document.getElementById('checkbox').onclick = this.muteBTNAction.bind(this);
   }
 
   muteBTNAction() {
     if (this.sound === true) {
-      document.getElementById('sound-btn').value = 'Turn on sound';
+      document.getElementById('tusz').innerText = 'Tyts to turn off sound';
       this.sound = false;
     } else {
       this.sound = true;
-      document.getElementById('sound-btn').value = 'Turn off sound';
+      document.getElementById('tusz').innerText = 'Tyts to turn on sound';
     }
 
   }

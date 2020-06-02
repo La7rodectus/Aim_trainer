@@ -11,8 +11,12 @@
       <div class="menu">
         <input type="button" id="startStop" value="Start / Pause" class="menu-btn" name="main-menu">
         <input type="button" id="stop" value="Stop" class="menu-btn" name="main-menu">
-        <input id="sound-btn" class="menu-btn" type="button" value="Turn off sound">
-         <form name="castom" method="post">
+        <form id="soundForm">
+          <input type="checkbox" id="checkbox">
+          <label for="checkbox"></label>
+          <div id="tusz" >Tyts to turn on sound</div>
+        </form>
+         <form name="castom" id="custom" method="post">
           <p>Enter circle border color<br>
             <input id="colorborderinput" class="form-cell" title="Must contain 7 symbols and first one must be #" type="text" maxlength="7" placeholder="hex color code" size="40">
            </p>
