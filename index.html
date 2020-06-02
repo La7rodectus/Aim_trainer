@@ -7,33 +7,36 @@
   </head>
   <body>
     <script type="module" src="./scr/script.js"></script>
-    <div class="menu">
-      <input type="button" id="startStop" value="Start / Pause" class="menu-btn" name="main-menu">
-      <input type="button" id="stop" value="Stop" class="menu-btn" name="main-menu">
-
-       <form name="castom" method="post">
-        <p>Enter circle border color<br>
-          <input id="colorborderinput" class="form-cell" title="Must contain 7 symbols and first one must be #" type="text" maxlength="7" placeholder="hex color code" size="40">
-         </p>
-         <p>Enter circle color<br>
-          <input id="colorfillinput" class="form-cell" type="text" title="Must contain 7 symbols and first one must be #" maxlength="7" placeholder="hex color code" size="40">
-         </p>
-        <p><input id="confirm-btn" class="form-cell" type="button" value="Confirm"></p>
-       </form>
-       <div id="message">
-        <h3>Hex color code must include:</h3>
-        <p id="seven" class="invalid">Must contain 7 symbols</p>
-        <p id="first" class="invalid">First symbol must be '#'</p>
+    <div id="siteWrap">
+      <div class="menu">
+        <input type="button" id="startStop" value="Start / Pause" class="menu-btn" name="main-menu">
+        <input type="button" id="stop" value="Stop" class="menu-btn" name="main-menu">
+  
+         <form name="castom" method="post">
+          <p>Enter circle border color<br>
+            <input id="colorborderinput" class="form-cell" title="Must contain 7 symbols and first one must be #" type="text" maxlength="7" placeholder="hex color code" size="40">
+           </p>
+           <p>Enter circle color<br>
+            <input id="colorfillinput" class="form-cell" type="text" title="Must contain 7 symbols and first one must be #" maxlength="7" placeholder="hex color code" size="40">
+           </p>
+          <p><input id="confirm-btn" class="form-cell" type="button" value="Confirm"></p>
+         </form>
+         <div id="message">
+          <h3>Hex color code must include:</h3>
+          <p id="seven" class="invalid">Must contain 7 symbols</p>
+          <p id="first" class="invalid">First symbol must be '#'</p>
+        </div>
       </div>
+      <div class="shoot_wraper">
+        <canvas id="bg_canvas"></canvas>
+        <canvas id="fr_canvas"></canvas>
+        <div id="timer"><p id="timerText">00:00</p></div>
+        <div id="game-over">Game Over</div>
+        <div id="pause">Pause <br> shoot to resume </div>
+      </div>
+      <div id="acc"></div>
     </div>
-    <div class="shoot_wraper">
-      <canvas id="bg_canvas"></canvas>
-      <canvas id="fr_canvas"></canvas>
-      <div id="timer"><p id="timerText">00:00</p></div>
-      <div id="game-over">Game Over</div>
-      <div id="pause">Pause <br> shoot to resume </div>
-    </div>
-    <div id="text"></div>
+
     </body>
 </html>
 

@@ -1,8 +1,12 @@
 body{
     display: flex;
-    justify-content: stretch;
-    align-content: center;
+    align-items: flex-start;
+}
 
+#siteWrap {
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
 }
 
 .form-cell {
@@ -19,6 +23,9 @@ body{
 }
 
 .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     left: 0px;
     margin: 10px;
     margin-left: 0px;
@@ -30,6 +37,8 @@ body{
     background-color: aquamarine;
     color: #000;
     position: relative;
+    font-family: gameover;
+    font-size: 25px;
     padding: 10px;
 }
 
@@ -182,9 +191,9 @@ showToOpa1 {
     z-index: 1;
     width: 100%;
     height: 100%;
-    border-color: salmon;
+    border-color: red;
     border-style: dotted;
-    text-decoration-color: firebrick;
+    text-decoration-color: red;
     font-family: gameover;
     font-size: 50px;
     -moz-user-select: none;

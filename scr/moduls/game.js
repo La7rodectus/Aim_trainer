@@ -18,18 +18,17 @@ export default class Game {
     this.maxR = 40;
     this.startBTN = 0;
     this.generatorInterval = undefined;
+    this.pauseDiffId = undefined;
     this.missed = 0;
     this.hits = 0;
     this.gameStage = 0; // ['stop', 'pause', 'resume', 'play', 'gameover']
   }
 
   ini() {
-    this.front.canvas.onclick = this.shot.bind(this);
     document.getElementById('startStop').onclick = this.startBTNActivation.bind(this);
     document.getElementById('stop').onclick = this.stopBTNActivation.bind(this);
     document.getElementById('confirm-btn').onclick = this.setFrontColorStyle.bind(this);
     this.pauseScreen.onclick = this.startBTNActivation.bind(this);
-    this.overScreen.onclick = this.startBTNActivation.bind(this);
   }
 
   showPauseScreen() {
@@ -44,6 +43,7 @@ export default class Game {
 
   startBTNActivation() {
     if (this.startBTN === 0) {
+      this.front.canvas.onclick = this.shot.bind(this);
       this.hidePauseScreen();
       this.gameOverScreenHide();
       this.startBTN = 1;
@@ -53,10 +53,11 @@ export default class Game {
         this.front.canvas.onmouseleave = this.mouseOutIvent.bind(this);
       }, 1000);
     } else {
-      this.front.canvas.removeAttribute('onmouseleave');
+      this.front.canvas.onclick = null;
       this.showPauseScreen();
       this.startBTN = 0;
       this.gameTimer.pause();
+      clearTimeout(this.generatorInterval);
     }
   }
 
@@ -79,21 +80,27 @@ export default class Game {
     const index = this.currentPlayer.gameSessions.length - 1;
     const lastTime = this.currentPlayer.gameSessions[index];
     let speed = lastTime.hits / (lastTime.time.m * 60 + lastTime.time.s);
-    if (speed !== 0) {
+    if (speed !== 0 && speed) {
       speed = '<br> Hits/sec = ' + speed.toFixed(3);
     } else {
       speed = '<br> not ur best try';
     }
     this.overScreen.innerHTML = 'Game Over <br>' + lastTime.time.m + ':' + lastTime.time.s + speed + '<br> shoot to try again';
     this.overScreen.classList.add('show');
+    setTimeout(() => {
+      this.overScreen.onclick = this.startBTNActivation.bind(this);
+    }, 2000);
   }
 
   gameOverScreenHide() {
     this.overScreen.style.zIndex = 1;
     this.overScreen.classList.remove('show');
+    this.overScreen.onclick = null;
   }
 
   gameReset() {
+    this.front.canvas.onclick = null;
+    this.front.canvas.onmouseleave = null;
     this.startBTN = 0;
     this.carrentTimer = 1500;
     this.back.reset();
@@ -104,6 +111,7 @@ export default class Game {
     this.hits = 0;
     this.gameOverScreenHide();
     this.hidePauseScreen();
+    clearTimeout(this.generatorInterval);
   }
 
   stopBTNActivation() {
@@ -112,7 +120,7 @@ export default class Game {
 
   mouseOutIvent() {
     if (this.startBTN === 1) {
-      this.front.canvas.removeAttribute('onmouseleave');
+      this.front.canvas.onmouseleave = null;
       this.showPauseScreen();
       this.startBTN = 0;
       this.gameTimer.pause();
@@ -121,7 +129,7 @@ export default class Game {
 
   circlesGeneratorChallenge() {
     if (this.startBTN === 1) {
-      setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
+      this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
       const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
       const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
       const backColor = this.back.getColorCode();
@@ -136,6 +144,17 @@ export default class Game {
         }
         if (this.carrentTimer <= 700) {
           this.carrentTimer -= this.dif / 8;
+        }
+      }
+    } else {
+      clearTimeout(this.pauseDiffId);
+      clearTimeout(this.generatorInterval);
+      if (this.carrentTimer > this.dif + 250) {
+        if (this.carrentTimer > 700) {
+          this.carrentTimer += this.dif;
+        }
+        if (this.carrentTimer <= 700) {
+          this.carrentTimer += this.dif / 8;
         }
       }
     }
@@ -166,9 +185,43 @@ export default class Game {
     if (!this.currentPlayer.health) {
       this.currentPlayer.init(this.gameMode);
     }
-    if (this.startBTN === 1) {
-      if (this.gameMode === 'challenge') {
-        this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
+    if (this.gameMode === 'challenge') {
+      const pauseTimeDiff = this.gameTimer.getPauseTimeDiff();
+      if (pauseTimeDiff === 0) {
+        this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer - pauseTimeDiff);
+      } else {
+        clearTimeout(this.pauseDiffId);
+        this.pauseDiffId = setTimeout(() => {
+          this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer + pauseTimeDiff);
+          if (this.startBTN === 1) {
+            const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
+            const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
+            const backColor = this.back.getColorCode();
+            this.back.setCircleStyle(backColor, backColor);
+            this.front.addArc(x, y);
+            this.back.addArc(x, y);
+            this.back.draw();
+            this.front.draw();
+            if (this.carrentTimer > this.dif + 250) {
+              if (this.carrentTimer > 700) {
+                this.carrentTimer -= this.dif;
+              }
+              if (this.carrentTimer <= 700) {
+                this.carrentTimer -= this.dif / 8;
+              }
+            }
+          } else {
+            clearTimeout(this.pauseDiffId);
+            if (this.carrentTimer > this.dif + 250) {
+              if (this.carrentTimer > 700) {
+                this.carrentTimer += this.dif;
+              }
+              if (this.carrentTimer <= 700) {
+                this.carrentTimer += this.dif / 8;
+              }
+            }
+          }
+        }, pauseTimeDiff);
       }
     }
     this.animateCircels();

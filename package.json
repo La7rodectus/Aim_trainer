@@ -1,6 +1,6 @@
 {
   "name": "aim_trainer",
-  "version": "0.33.0",
+  "version": "0.41.0",
   "description": "Site for AIM training",
   "main": "index.html",
   "scripts": {

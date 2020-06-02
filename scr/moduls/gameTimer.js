@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 
 export default class GameTimer {
   constructor(timerParId) {
@@ -9,6 +10,11 @@ export default class GameTimer {
     this.pauseTime = 0;
     this.pauseTimeDiff = 0;
     this.interval = undefined;
+    this.pauseDiffTimeOut = undefined;
+  }
+
+  getPauseTimeDiff() {
+    return this.pauseTimeDiff;
   }
 
   init() {
@@ -24,6 +30,7 @@ export default class GameTimer {
 
   stop() {
     clearInterval(this.interval);
+    clearTimeout(this.pauseDiffTimeOut);
     this.reset();
     this.startTime = 0;
     this.pauseTime = 0;
@@ -33,6 +40,7 @@ export default class GameTimer {
 
   pause() {
     clearInterval(this.interval);
+    clearTimeout(this.pauseDiffTimeOut);
     this.pauseTime = new Date().getTime();
   }
 
@@ -41,7 +49,8 @@ export default class GameTimer {
       this.init();
     } else {
       this.pauseTimeDiff = 1000 - (this.pauseTime - this.startTime) % 1000;
-      setTimeout(() => { this.tick(); this.init(); }, this.pauseTimeDiff);
+      clearTimeout(this.pauseDiffTimeOut);
+      this.pauseDiffTimeOut = setTimeout(() => { this.tick(); this.init(); }, this.pauseTimeDiff);
     }
   }
 
