@@ -1,3 +1,7 @@
+/* eslint-disable max-len */
+
+import { printRightSide } from './library.js';
+
 
 export default class Player {
   constructor() {
@@ -8,7 +12,13 @@ export default class Player {
   }
 
   saveGameSessions(time, hits) {
-    this.gameSessions.push({ time, hits, graphHits: this.hits });
+    let speed = hits / (time.m * 60 + time.s);
+    if (speed !== 0 && speed) {
+      speed = '<br> Hits/sec = ' + speed.toFixed(3);
+    } else {
+      speed = '<br> not ur best try';
+    }
+    this.gameSessions.push({ time, hits, speed, graphHits: this.hits });
   }
 
   playerHealthReset() {
@@ -24,4 +34,11 @@ export default class Player {
   addHit(x, y, target) {
     this.hits.push({ x, y, target });
   }
+
+  printResult() {
+    const lastGame = this.gameSessions[this.gameSessions.length - 1];
+    const strToPrint = 'time = ' + lastGame.time.m + ':' + lastGame.time.s + lastGame.speed;
+    printRightSide(strToPrint);
+  }
+
 }

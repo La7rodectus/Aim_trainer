@@ -14,6 +14,7 @@ export default class Game {
     this.gameTimer = gameTimer;
     this.carrentTimer = 1500;
     this.gameMode = 'challenge';
+    this.sound = true;
     this.dif = 50;
     this.maxR = 40;
     this.generatorInterval = undefined;
@@ -27,14 +28,24 @@ export default class Game {
     document.getElementById('startStop').onclick = this.startBTNActivation.bind(this);
     document.getElementById('stop').onclick = this.stopBTNActivation.bind(this);
     document.getElementById('confirm-btn').onclick = this.setFrontColorStyle.bind(this);
+    document.getElementById('sound-btn').onclick = this.muteBTNAction.bind(this);
+  }
+
+  muteBTNAction() {
+    if (this.sound === true) {
+      document.getElementById('sound-btn').value = 'Turn on sound';
+      this.sound = false;
+    } else {
+      this.sound = true;
+      document.getElementById('sound-btn').value = 'Turn off sound';
+    }
+
   }
 
   showPauseScreen() {
     this.pauseScreen.style.display = 'inline-flex';
     this.pauseScreen.classList.add('show');
-    setTimeout(() => {
-      this.pauseScreen.onclick = this.resume.bind(this);
-    }, 1500);
+    this.pauseScreen.onclick = this.resume.bind(this);
   }
 
   hidePauseScreen() {
@@ -109,8 +120,10 @@ export default class Game {
     if (this.back.lost !== this.missed) {
       this.missed++;
       this.currentPlayer.health--;
-      this.missSound.currentTime = 0;
-      this.missSound.play();
+      if (this.sound) {
+        this.missSound.currentTime = 0;
+        this.missSound.play();
+      }
     }
     if (this.currentPlayer.health === 0) {
       this.currentPlayer.saveGameSessions(this.gameTimer.getLastTime(), this.hits);
@@ -121,16 +134,11 @@ export default class Game {
 
   gameOverScreenShow() {
     this.overScreen.style.zIndex = 5;
-    const index = this.currentPlayer.gameSessions.length - 1;
-    const lastTime = this.currentPlayer.gameSessions[index];
-    let speed = lastTime.hits / (lastTime.time.m * 60 + lastTime.time.s);
-    if (speed !== 0 && speed) {
-      speed = '<br> Hits/sec = ' + speed.toFixed(3);
-    } else {
-      speed = '<br> not ur best try';
-    }
+    const lastTime = this.currentPlayer.gameSessions[this.currentPlayer.gameSessions.length - 1];
+    const speed = lastTime.speed;
     this.overScreen.innerHTML = 'Game Over <br>' + lastTime.time.m + ':' + lastTime.time.s + speed + '<br> shoot to try again';
     this.overScreen.classList.add('show');
+    this.currentPlayer.printResult();
     setTimeout(() => {
       this.overScreen.onclick = this.startBTNActivation.bind(this);
     }, 2000);
@@ -262,13 +270,19 @@ export default class Game {
       this.front.draw();
       this.currentPlayer.addHit(carrentX, carrentY, target);
       this.hits++;
-      this.hitSound.currentTime = 0;
-      this.hitSound.play();
+      if (this.sound) {
+        this.hitSound.currentTime = 0;
+        this.hitSound.play();
+      }
+
     } else {
       this.currentPlayer.health--;
       this.rulesCheck();
-      this.missSound.currentTime = 0;
-      this.missSound.play();
+      if (this.sound) {
+        this.missSound.currentTime = 0;
+        this.missSound.play();
+      }
+
     }
   }
 

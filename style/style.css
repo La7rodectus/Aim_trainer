@@ -7,6 +7,8 @@ body{
     display: flex;
     align-items: stretch;
     flex-direction: row;
+    width: 100vw;
+    height: 100vh;
 }
 
 .form-cell {
@@ -14,7 +16,7 @@ body{
 }
 
 #confirm-btn {
-    background-color:  aquamarine;
+    background-color: aquamarine;
     border-color: aquamarine;
     border-radius: 5%;
     height: 40px;
@@ -48,6 +50,32 @@ body{
     padding: 10px 35px;
     font-size: 25px;
     font-family: gameover;
+}
+
+#rightSide {
+    display: flex;
+    position: relative;
+    width: 30%;
+    height: 50vh;
+}
+
+#res {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-self: stretch;
+    justify-content: flex-start;
+    flex-direction: column;
+    font-size: 25px;
+    padding: 10px;
+    background-color: aquamarine;
+    margin: 5px;
+    margin-top: 0px;
+}
+
+#res p {
+    margin: 10px;
 }
 
 .valid {
