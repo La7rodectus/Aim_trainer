@@ -16,49 +16,93 @@ export default class Game {
     this.gameMode = 'challenge';
     this.dif = 50;
     this.maxR = 40;
-    this.startBTN = 0;
     this.generatorInterval = undefined;
     this.pauseDiffId = undefined;
     this.missed = 0;
     this.hits = 0;
-    this.gameStage = 0; // ['stop', 'pause', 'resume', 'play', 'gameover']
+    this.gameStage = 'stop'; // ['stop', 'pause', 'resume', 'play', 'gameover']
   }
 
   ini() {
     document.getElementById('startStop').onclick = this.startBTNActivation.bind(this);
     document.getElementById('stop').onclick = this.stopBTNActivation.bind(this);
     document.getElementById('confirm-btn').onclick = this.setFrontColorStyle.bind(this);
-    this.pauseScreen.onclick = this.startBTNActivation.bind(this);
   }
 
   showPauseScreen() {
     this.pauseScreen.style.display = 'inline-flex';
     this.pauseScreen.classList.add('show');
+    setTimeout(() => {
+      this.pauseScreen.onclick = this.resume.bind(this);
+    }, 1500);
   }
 
   hidePauseScreen() {
     this.pauseScreen.style.display = 'none';
     this.pauseScreen.classList.remove('show');
+    this.pauseScreen.onclick = null;
   }
 
   startBTNActivation() {
-    if (this.startBTN === 0) {
-      this.front.canvas.onclick = this.shot.bind(this);
-      this.hidePauseScreen();
-      this.gameOverScreenHide();
-      this.startBTN = 1;
+    if (this.gameStage === 'stop') {
       this.play();
-      this.gameTimer.resume();
       setTimeout(() => {
         this.front.canvas.onmouseleave = this.mouseOutIvent.bind(this);
       }, 1000);
-    } else {
+    } else if (this.gameStage === 'pause') {
+      this.resume();
+      setTimeout(() => {
+        this.front.canvas.onmouseleave = this.mouseOutIvent.bind(this);
+      }, 1000);
+    } else if (this.gameStage === 'play') {
+      this.pause();
+    }
+  }
+
+  pause() {
+    if (this.gameStage !== 'pause') {
       this.front.canvas.onclick = null;
+      this.gameStage = 'pause';
       this.showPauseScreen();
-      this.startBTN = 0;
       this.gameTimer.pause();
       clearTimeout(this.generatorInterval);
+      clearTimeout(this.pauseDiffId);
     }
+  }
+
+  resume() {
+    const pauseTimerDif = this.gameTimer.getPauseTimeDiff();
+    this.pauseDiffId = setTimeout(() => {
+      const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
+      const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
+      const backColor = this.back.getColorCode();
+      this.back.setCircleStyle(backColor, backColor);
+      this.front.addArc(x, y);
+      this.back.addArc(x, y);
+      this.back.draw();
+      this.front.draw();
+      this.timerItervalCorrection();
+      this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
+    }, pauseTimerDif);
+    this.front.canvas.onclick = this.shot.bind(this);
+    this.hidePauseScreen();
+    this.gameOverScreenHide();
+    this.animateCircels();
+    this.gameTimer.resume();
+    this.gameStage = 'play';
+  }
+
+  play() {
+    this.currentPlayer.init(this.gameMode);
+    if (this.gameMode === 'challenge') {
+      this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
+    }
+    this.front.canvas.onclick = this.shot.bind(this);
+    this.hidePauseScreen();
+    this.gameOverScreenHide();
+    this.animateCircels();
+    this.gameTimer.resume();
+    this.gameStage = 'play';
   }
 
   rulesCheck() {
@@ -101,7 +145,7 @@ export default class Game {
   gameReset() {
     this.front.canvas.onclick = null;
     this.front.canvas.onmouseleave = null;
-    this.startBTN = 0;
+    this.gameStage = 'stop';
     this.carrentTimer = 1500;
     this.back.reset();
     this.front.reset();
@@ -112,6 +156,7 @@ export default class Game {
     this.gameOverScreenHide();
     this.hidePauseScreen();
     clearTimeout(this.generatorInterval);
+    clearTimeout(this.pauseDiffId);
   }
 
   stopBTNActivation() {
@@ -119,50 +164,38 @@ export default class Game {
   }
 
   mouseOutIvent() {
-    if (this.startBTN === 1) {
-      this.front.canvas.onmouseleave = null;
-      this.showPauseScreen();
-      this.startBTN = 0;
-      this.gameTimer.pause();
+    if (this.gameStage === 'play') {
+      this.pause();
+    }
+  }
+
+  timerItervalCorrection() {
+    if (this.carrentTimer > this.dif + 300) {
+      if (this.carrentTimer > 700) {
+        this.carrentTimer -= this.dif;
+      }
+      if (this.carrentTimer <= 700) {
+        this.carrentTimer -= this.dif / 5;
+      }
     }
   }
 
   circlesGeneratorChallenge() {
-    if (this.startBTN === 1) {
-      this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
-      const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
-      const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
-      const backColor = this.back.getColorCode();
-      this.back.setCircleStyle(backColor, backColor);
-      this.front.addArc(x, y);
-      this.back.addArc(x, y);
-      this.back.draw();
-      this.front.draw();
-      if (this.carrentTimer > this.dif + 250) {
-        if (this.carrentTimer > 700) {
-          this.carrentTimer -= this.dif;
-        }
-        if (this.carrentTimer <= 700) {
-          this.carrentTimer -= this.dif / 8;
-        }
-      }
-    } else {
-      clearTimeout(this.pauseDiffId);
-      clearTimeout(this.generatorInterval);
-      if (this.carrentTimer > this.dif + 250) {
-        if (this.carrentTimer > 700) {
-          this.carrentTimer += this.dif;
-        }
-        if (this.carrentTimer <= 700) {
-          this.carrentTimer += this.dif / 8;
-        }
-      }
-    }
+    const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
+    const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
+    const backColor = this.back.getColorCode();
+    this.back.setCircleStyle(backColor, backColor);
+    this.front.addArc(x, y);
+    this.back.addArc(x, y);
+    this.back.draw();
+    this.front.draw();
+    this.timerItervalCorrection();
+    this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
   }
 
   animateCircels() {
     const increment = setInterval(() => {
-      if (this.startBTN === 0) {
+      if (this.gameStage === 'pause' || this.gameStage === 'stop') {
         clearInterval(increment);
       }
       this.back.radiusAnimationControl(this.maxR);
@@ -173,58 +206,12 @@ export default class Game {
   }
 
   refreshCanvas60() {
-    if (this.startBTN === 0) {
+    if (this.gameStage === 'pause' || this.gameStage === 'stop') {
       window.cancelAnimationFrame(this);
     }
     this.back.draw();
     this.front.draw();
     window.requestAnimationFrame(this.refreshCanvas60.bind(this));
-  }
-
-  play() {
-    if (!this.currentPlayer.health) {
-      this.currentPlayer.init(this.gameMode);
-    }
-    if (this.gameMode === 'challenge') {
-      const pauseTimeDiff = this.gameTimer.getPauseTimeDiff();
-      if (pauseTimeDiff === 0) {
-        this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer - pauseTimeDiff);
-      } else {
-        clearTimeout(this.pauseDiffId);
-        this.pauseDiffId = setTimeout(() => {
-          this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer + pauseTimeDiff);
-          if (this.startBTN === 1) {
-            const x = getRandomIntInclusive(this.maxR, this.front.canvas.clientWidth - this.maxR);
-            const y = getRandomIntInclusive(this.maxR, this.front.canvas.clientHeight - this.maxR);
-            const backColor = this.back.getColorCode();
-            this.back.setCircleStyle(backColor, backColor);
-            this.front.addArc(x, y);
-            this.back.addArc(x, y);
-            this.back.draw();
-            this.front.draw();
-            if (this.carrentTimer > this.dif + 250) {
-              if (this.carrentTimer > 700) {
-                this.carrentTimer -= this.dif;
-              }
-              if (this.carrentTimer <= 700) {
-                this.carrentTimer -= this.dif / 8;
-              }
-            }
-          } else {
-            clearTimeout(this.pauseDiffId);
-            if (this.carrentTimer > this.dif + 250) {
-              if (this.carrentTimer > 700) {
-                this.carrentTimer += this.dif;
-              }
-              if (this.carrentTimer <= 700) {
-                this.carrentTimer += this.dif / 8;
-              }
-            }
-          }
-        }, pauseTimeDiff);
-      }
-    }
-    this.animateCircels();
   }
 
   setFrontColorStyle() {
