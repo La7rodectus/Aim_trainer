@@ -32,11 +32,11 @@ export default class Game {
   }
 
   muteBTNAction() {
-    if (this.sound === true) {
+    if (this.sound === false) {
       document.getElementById('tusz').innerText = 'Tyts to turn off sound';
-      this.sound = false;
-    } else {
       this.sound = true;
+    } else {
+      this.sound = false;
       document.getElementById('tusz').innerText = 'Tyts to turn on sound';
     }
 
