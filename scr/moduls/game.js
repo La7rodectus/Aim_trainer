@@ -1,17 +1,27 @@
 /* eslint-disable max-len */
 
+//getRandomIntInclusive fn
 import { getRandomIntInclusive } from './library.js';
 
+//canvas class
+import CanvasClass from './CanvasClass.js';
+
+//player class
+import Player from './player.js';
+
+//timer class
+import GameTimer from './gameTimer.js';
+
 export default class Game {
-  constructor(frontCanvas, backCanvas, gameTimer, player) {
+  constructor() {
     this.pauseScreen = document.getElementById('pause');
     this.overScreen = document.getElementById('game-over');
     this.hitSound = new Audio('./audio/hit.mp3');
     this.missSound = new Audio('./audio/miss.mp3');
-    this.currentPlayer = player;
-    this.front = frontCanvas;
-    this.back = backCanvas;
-    this.gameTimer = gameTimer;
+    this.currentPlayer = new Player();
+    this.front = new CanvasClass('fr_canvas');
+    this.back = new CanvasClass('bg_canvas');
+    this.gameTimer = new GameTimer('timerText');
     this.carrentTimer = 1500;
     this.gameMode = 'challenge';
     this.sound = false;

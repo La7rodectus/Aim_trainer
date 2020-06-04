@@ -18,7 +18,18 @@ export default class Player {
     } else {
       speed = '<br> not ur best try';
     }
-    this.gameSessions.push({ time, hits, speed, graphHits: this.hits });
+    const serverData = { time, hits, speed, graphHits: this.hits };
+    this.gameSessions.push(serverData);
+    const sendOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(serverData),
+    };
+    fetch('/clientData', sendOptions).then(response => {
+      console.log(response.json());
+    });
   }
 
   playerHealthReset() {
