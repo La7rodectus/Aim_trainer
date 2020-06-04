@@ -9,6 +9,7 @@ export default class Player {
     this.hits = new Array();
     this.gameSessions = new Array();
     this.hitsPerSecond = new Array();
+    this.playerName = 'testName';
   }
 
   saveGameSessions(time, hits) {
@@ -20,16 +21,19 @@ export default class Player {
     }
     const serverData = { time, hits, speed, graphHits: this.hits };
     this.gameSessions.push(serverData);
-    const sendOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(serverData),
-    };
-    fetch('/clientData', sendOptions).then(response => {
-      console.log(response.json());
-    });
+    if (this.playerName) {
+      const sendOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(serverData),
+      };
+      fetch('/clientData', sendOptions).then(response => {
+        console.log(response.json());
+      });
+    }
+
   }
 
   playerHealthReset() {
