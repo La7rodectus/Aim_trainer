@@ -12,6 +12,22 @@ export default class Player {
     this.playerName = 'testName';
   }
 
+  getBestResalt() {
+    if (this.playerName) {
+      const sendOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ playerName: `${this.playerName}` }),
+      };
+      fetch('/getBestRes', sendOptions).then(response => {
+        console.log(response.json());
+        return (response.json().bestTime);
+      });
+    }
+  }
+
   saveGameSessions(time, hits) {
     let speed = hits / (time.m * 60 + time.s);
     if (speed !== 0 && speed) {
@@ -27,9 +43,9 @@ export default class Player {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(serverData),
+        body: JSON.stringify({ playerName: `${this.playerName}`, sessionData: serverData }),
       };
-      fetch('/clientData', sendOptions).then(response => {
+      fetch('/saveClientData', sendOptions).then(response => {
         console.log(response.json());
       });
     }

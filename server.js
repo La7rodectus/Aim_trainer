@@ -22,6 +22,19 @@ function jsonReader(filePath, cb) {
     }
   });
 }
+function byField(field) {
+  return (a, b) => (a[field] > b[field] ? 1 : -1);
+}
+function convertSpeedAndTime(sessionStats) {
+  const time = sessionStats.time.m * 60 + sessionStats.time.s;
+  if (time === 0) {
+    sessionStats.speed = 0;
+    sessionStats.time = 0;
+  } else {
+    sessionStats.time = +time;
+    sessionStats.speed = +(sessionStats.hits / time).toFixed(3);
+  }
+}
 
 jsonReader('./serverData/usersData.json', (err, fileData) => {
   if (err) {
@@ -31,14 +44,23 @@ jsonReader('./serverData/usersData.json', (err, fileData) => {
   console.log(fileData);
 });
 
-
-
-app.post('/clientData', (request, response) => {
+app.post('/saveClientData', (request, response) => {
   console.log(request.body);
-
-  fs.writeFile('./serverData/usersData.json', JSON.stringify(request.body, null, 2), err => {
-    if (err) console.log('Error writing file:', err);
+  fs.readFile('./serverData/usersData.json', (err, fileData) => {
+    if (err) {
+      return 'Error reading file from disk:', err;
+    }
+    const nickName = request.body.playerName;
+    const sessionStats = request.body.sessionData;
+    convertSpeedAndTime(sessionStats);
+    const jsonObj = JSON.parse(fileData);
+    !jsonObj[nickName] ? jsonObj[nickName] = new Array() : jsonObj[nickName];
+    jsonObj[nickName].push(sessionStats);
+    fs.writeFile('./serverData/usersData.json', JSON.stringify(jsonObj, null, 2), err => {
+      if (err) console.log('Error writing file:', err);
+    });
   });
+
 
   response.json({
     status: 'success',
@@ -47,8 +69,28 @@ app.post('/clientData', (request, response) => {
 
 });
 
-app.get('/clientData', (request, response) => {
+app.post('/getBestRes', (request, response) => {
+  let bestTime = undefined;
+  fs.readFile('./serverData/usersData.json', (err, fileData) => {
+    if (err) {
+      return 'Error reading file from disk:', err;
+    }
+    const playerName = request.body.playerName;
+    const jsonFile = JSON.parse(fileData);
+    if (!jsonFile[playerName]) {
+      jsonFile[playerName].sort(byField('time').reverse());
+      bestTime = jsonFile[playerName][0].time;
+    }
+  });
   console.log(request);
+
+  response.json({
+    status: 'success',
+    bestTime: `${bestTime}`,
+  });
+
+
+  response.end();
 });
 
 app.listen(port, () => {
