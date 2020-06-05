@@ -316,10 +316,12 @@ input {
 
 #colorfillinput {
     background-color: black;
+    color: white;
 }
 
 #colorborderinput {
     background-color: black;
+    color: white;
 }
 
 #soundForm {

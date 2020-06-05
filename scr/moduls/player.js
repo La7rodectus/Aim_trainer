@@ -10,21 +10,25 @@ export default class Player {
     this.gameSessions = new Array();
     this.hitsPerSecond = new Array();
     this.playerName = 'testName';
+    this.bestTime = undefined;
   }
 
   getBestResalt() {
     if (this.playerName) {
       const sendOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ playerName: `${this.playerName}` }),
       };
-      fetch('/getBestRes', sendOptions).then(response => {
-        console.log(response.json());
-        return (response.json().bestTime);
-      });
+      fetch('/getBestRes', sendOptions)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          this.bestTime = data.bestTime;
+        })
+        .catch(err => console.log(err));
     }
   }
 
@@ -45,9 +49,12 @@ export default class Player {
         },
         body: JSON.stringify({ playerName: `${this.playerName}`, sessionData: serverData }),
       };
-      fetch('/saveClientData', sendOptions).then(response => {
-        console.log(response.json());
-      });
+      fetch('/saveClientData', sendOptions)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+        })
+        .catch(err => console.log(err));
     }
 
   }
