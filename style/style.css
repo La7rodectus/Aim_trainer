@@ -1,7 +1,7 @@
 body{
     display: flex;
     align-items: flex-start;
-    background-image: url(/images/site-bg.jpg);
+    background-image: url(./images/site-bg.jpg);
 }
 
 #siteWrap {
