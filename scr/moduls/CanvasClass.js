@@ -8,7 +8,7 @@ export default class CanvasClass {
     this.canvasId = canvasId;
     this.ctx.globalAlpha = 1;
     this.circlesXYandColor = new Array();
-    this.circlesStyles = { colorborder: '#00FF00', colorfill: '#eb4034' };
+    this.circlesStyles = { colorborder: '#000000', colorfill: '#FFFFFF' };
     this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
     this.lost = 0;
   }

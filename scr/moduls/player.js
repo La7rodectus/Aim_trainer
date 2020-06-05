@@ -15,7 +15,7 @@ export default class Player {
   getBestResalt() {
     if (this.playerName) {
       const sendOptions = {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },

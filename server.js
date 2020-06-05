@@ -69,7 +69,7 @@ app.post('/saveClientData', (request, response) => {
 
 });
 
-app.post('/getBestRes', (request, response) => {
+app.get('/getBestRes', (request, response) => {
   let bestTime = undefined;
   fs.readFile('./serverData/usersData.json', (err, fileData) => {
     if (err) {
@@ -84,7 +84,7 @@ app.post('/getBestRes', (request, response) => {
   });
   console.log(request);
 
-  response.json({
+  response.send({
     status: 'success',
     bestTime: `${bestTime}`,
   });

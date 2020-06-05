@@ -1,6 +1,7 @@
 body{
     display: flex;
     align-items: flex-start;
+    background-image: url(/images/site-bg.jpg);
 }
 
 #siteWrap {
@@ -20,16 +21,18 @@ body{
     width: 100%;
     box-shadow: 0 5px 6px rgba(0, 0, 0, .3);
     border-radius: 20px;
+    border-color: white;
 }
 
 #confirm-btn {
-    background-color: aquamarine;
-    border-color: aquamarine;
+    background-color: black;
+    border-color: white;
     border-radius: 20px;
     height: 40px;
     font-size: 25px;
     font-family: gameover;
     box-shadow: 0 5px 6px rgba(0, 0, 0, .3);
+    color: white;
 
 }
 
@@ -46,7 +49,7 @@ body{
 #message {
     width: 100%;
     display: none;
-    background-color: aquamarine;
+    background-color: white;
     color: #000;
     position: relative;
     font-family: gameover;
@@ -70,6 +73,7 @@ body{
     position: relative;
     width: 30%;
     height: 50vh;
+    background-color: transparent;
 
 }
 
@@ -83,11 +87,12 @@ body{
     flex-direction: column;
     font-size: 25px;
     padding: 10px;
-    background-color: aquamarine;
     margin: 5px;
     margin-top: 0px;
     box-shadow: 0 5px 6px rgba(0, 0, 0, .3);
     border-radius: 50px;
+    background-color: transparent;
+    color: white;
 
 }
 
@@ -171,7 +176,9 @@ input {
     width: 100%;
     height: 60px;
     outline: none;
-    background-color:  aquamarine;
+    background-color: black;
+    color: white;
+    border-color: white;
     font-family: gameover;
     font-size: 25px;
     box-shadow: 0 5px 6px rgba(0, 0, 0, .3);
@@ -185,7 +192,7 @@ input {
     width: 40%;
     height: 20%;
     z-index: 2;
-    opacity: 0.3;
+    opacity: 1;
     font-family: 'Courier New', Courier, monospace;
     font-size: 15vw;
 
@@ -196,7 +203,7 @@ input {
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    color: mediumspringgreen;
+    color: black;
 }
 
 @font-face {
@@ -254,7 +261,7 @@ input {
     z-index: 1;
     width: 100%;
     height: 100%;
-    border-color: red;
+    border-color: black;
     border-style: dotted;
     text-decoration-color: red;
     font-family: gameover;
@@ -264,7 +271,8 @@ input {
     -webkit-user-select: none;
     user-select: none;
     opacity: 0;
-    background-color: aquamarine;
+    color: red;
+    background-color: white;
 }
 
 #pause {
@@ -276,9 +284,9 @@ input {
     z-index: 4;
     width: 100%;
     height: 100%;
-    border-color: salmon;
+    border-color: white;
     border-style: dotted;
-    text-decoration-color: firebrick;
+    color: white;
     font-family: gameover;
     font-size: 50px;
     -moz-user-select: none;
@@ -286,30 +294,41 @@ input {
     -webkit-user-select: none;
     user-select: none;
     opacity: 1;
-    background-color: aquamarine;
+    background-color: black;
 }
+
 
 #soundForm, label::after, label::before {
     padding: 0;
     font-size: 18px;
     line-height: 27px;
-    color: #757575;
-    background: #fff;
+    color: white;
+    background: transparent;
     transition: all .2s;
     box-sizing: border-box;
     cursor: pointer;
 
 }
+.input-p {
+   
+    color: white;
+}
 
-  
+#colorfillinput {
+    background-color: black;
+}
+
+#colorborderinput {
+    background-color: black;
+}
 
 #soundForm {
-    background: #fff;
+    background: transparent;
     margin: 20px;
     display: flex;
     position: relative;
     font-family: gameover;
-
+    color: white;
 
 }
 
@@ -337,7 +356,7 @@ label::after {
     position: absolute;
     width: 75px;
     height: 75px;
-    background: #ED2D56;
+    background: black;
     left: 0;
     top: -10px;
     display: block;
@@ -348,7 +367,7 @@ label::after {
   
 input[type="checkbox"]:checked + label::after {
     left: 60px;
-    background: aquamarine;
+    background: white;
     animation: material .4s ease-in-out;
 }
 
