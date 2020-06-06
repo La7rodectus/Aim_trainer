@@ -39,6 +39,7 @@ export default class Game {
     document.getElementById('stop').onclick = this.stopBTNActivation.bind(this);
     document.getElementById('confirm-btn').onclick = this.setFrontColorStyle.bind(this);
     document.getElementById('checkbox').onclick = this.muteBTNAction.bind(this);
+    this.currentPlayer.getBestResalt();
   }
 
   muteBTNAction() {
@@ -139,6 +140,9 @@ export default class Game {
       this.currentPlayer.saveGameSessions(this.gameTimer.getLastTime(), this.hits);
       this.gameReset();
       this.gameOverScreenShow();
+      setTimeout(() => {
+        this.currentPlayer.getBestResalt();
+      }, 2000);
     }
   }
 

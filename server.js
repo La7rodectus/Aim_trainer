@@ -60,8 +60,6 @@ app.post('/saveClientData', (request, response) => {
       if (err) console.log('Error writing file:', err);
     });
   });
-
-
   response.json({
     status: 'success',
   });
@@ -70,7 +68,6 @@ app.post('/saveClientData', (request, response) => {
 });
 
 app.post('/getBestRes', (request, response) => {
-  let bestTime = undefined;
   fs.readFile('./serverData/usersData.json', (err, fileData) => {
     if (err) {
       return 'Error reading file from disk:', err;
@@ -78,18 +75,16 @@ app.post('/getBestRes', (request, response) => {
     const playerName = request.body.playerName;
     const jsonFile = JSON.parse(fileData);
     if (jsonFile[playerName]) {
-      jsonFile[playerName].sort(byField('time').reverse());
-      bestTime = jsonFile[playerName][0].time;
+      jsonFile[playerName].sort(byField('time')).reverse();
+      const bestTime = jsonFile[playerName][0].time;
+      response.json({
+        status: 'success',
+        bestTime: `${bestTime}`,
+      });
+      response.end();
     }
   });
   console.log(request.body);
-
-  response.json({
-    status: 'success',
-    bestTime: `${bestTime}`,
-  });
-
-  response.end();
 });
 
 app.listen(port, () => {

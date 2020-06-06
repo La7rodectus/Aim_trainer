@@ -9,9 +9,10 @@ export function printRightSide(res) {
   const resPlace = document.getElementById('res');
   const p = document.createElement('p');
   p.innerHTML = res;
+  p.classList.add('parRes');
   resPlace.prepend(p);
-  const length = resPlace.querySelectorAll('p').length;
+  const length = resPlace.querySelectorAll('.parRes').length;
   if (length > 5) {
-    resPlace.removeChild(resPlace.querySelectorAll('p')[length - 1]);
+    resPlace.removeChild(resPlace.querySelectorAll('.parRes')[length - 1]);
   }
 }

@@ -10,7 +10,6 @@ export default class Player {
     this.gameSessions = new Array();
     this.hitsPerSecond = new Array();
     this.playerName = 'testName';
-    this.bestTime = undefined;
   }
 
   getBestResalt() {
@@ -26,9 +25,10 @@ export default class Player {
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          this.bestTime = data.bestTime;
-        })
-        .catch(err => console.log(err));
+          const str = ('BestTime = ' + data.bestTime + ' sec');
+          const p = document.getElementById('bestTime');
+          p.innerHTML = str;
+        });
     }
   }
 
@@ -53,8 +53,7 @@ export default class Player {
         .then(response => response.json())
         .then(data => {
           console.log(data);
-        })
-        .catch(err => console.log(err));
+        });
     }
 
   }
