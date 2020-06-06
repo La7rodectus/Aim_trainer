@@ -28,7 +28,8 @@ export default class Player {
           const str = ('BestTime = ' + data.bestTime + ' sec');
           const p = document.getElementById('bestTime');
           p.innerHTML = str;
-        });
+        })
+        .catch(err => console.log(err));
     }
   }
 
@@ -53,7 +54,8 @@ export default class Player {
         .then(response => response.json())
         .then(data => {
           console.log(data);
-        });
+        })
+        .catch(err => console.log(err));
     }
 
   }

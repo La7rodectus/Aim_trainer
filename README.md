@@ -14,10 +14,11 @@ to traint your aim. You will also be able to set up your account to track progre
 
 * Several game modes. //not yet
 * Target personalization.
-* Progress track .
+* Progress track.
 * Auto pause.
 * Server logging game sessions.
 * Mute sound.
+* Scoreboard.
 
 ## How to use
 
@@ -30,10 +31,9 @@ to traint your aim. You will also be able to set up your account to track progre
 ### Without server
 
 1. Clone or download repo.
-2. Open *index.html*
+2. Open *index.html*.
 
 ## TODO
 
-* Add best result showing
 * Add more training modes.
 * Registration.

@@ -40,6 +40,27 @@ export default class Game {
     document.getElementById('confirm-btn').onclick = this.setFrontColorStyle.bind(this);
     document.getElementById('checkbox').onclick = this.muteBTNAction.bind(this);
     this.currentPlayer.getBestResalt();
+    this.getScoreboard();
+  }
+
+  getScoreboard() {
+    const sendOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+    fetch('/getScoreboard', sendOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        const scoreboardDiv = document.getElementById('scoreboard');
+        scoreboardDiv.innerHTML = '';
+        data.scoreboard.forEach(player => {
+          scoreboardDiv.innerHTML += player.nick + ' : ' + player.time + ' sec <br>';
+        });
+      })
+      .catch(err => console.log(err));
   }
 
   muteBTNAction() {
@@ -142,6 +163,7 @@ export default class Game {
       this.gameOverScreenShow();
       setTimeout(() => {
         this.currentPlayer.getBestResalt();
+        this.getScoreboard();
       }, 2000);
     }
   }

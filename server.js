@@ -1,9 +1,8 @@
 /* eslint-disable max-len */
 const express = require('express');
 const fs = require('fs');
-const port = 3000;
-
 const app = express();
+const port = 3000;
 
 app.use(express.static('./'));
 app.use(express.json({ limit: '1mb' }));
@@ -86,6 +85,27 @@ app.post('/getBestRes', (request, response) => {
   });
   console.log(request.body);
 });
+
+app.post('/getScoreboard', (request, response) => {
+  fs.readFile('./serverData/usersData.json', (err, fileData) => {
+    if (err) {
+      return 'Error reading file from disk:', err;
+    }
+    const jsonFile = JSON.parse(fileData);
+    const scoreboard = new Array();
+    for (let playerName in jsonFile) {
+      jsonFile[playerName].sort(byField('time')).reverse();
+      const bestTime = jsonFile[playerName][0].time;
+      scoreboard.push({ nick: playerName, time: bestTime });
+    }
+    response.json({
+      status: 'success',
+      scoreboard,
+    });
+    response.end();
+  });
+});
+
 
 app.listen(port, () => {
   console.log('run at ' + port);

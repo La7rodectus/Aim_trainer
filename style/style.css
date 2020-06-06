@@ -72,14 +72,28 @@ body{
     display: flex;
     position: relative;
     width: 30%;
-    height: 50vh;
+    height: 100vh;
     background-color: transparent;
+    flex-direction: column;
+}
 
+#scoreboard {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    color: white;
+    background-color: transparent;
+    border-radius: 50px;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, .3);
+    align-items: flex-start;
+    justify-self: stretch;
+    justify-content: flex-start;
+    font-size: 25px;
 }
 
 #res {
     width: 100%;
-    height: 100%;
+    height: 50vh;
     display: flex;
     align-items: flex-start;
     justify-self: stretch;
@@ -87,6 +101,9 @@ body{
     flex-direction: column;
     font-size: 25px;
     padding: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
     margin: 5px;
     margin-top: 0px;
     box-shadow: 0 5px 6px rgba(0, 0, 0, .3);
