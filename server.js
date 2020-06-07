@@ -34,6 +34,15 @@ function convertSpeedAndTime(sessionStats) {
     sessionStats.speed = +(sessionStats.hits / time).toFixed(3);
   }
 }
+function checkPassANDORLog(jsonFile, nick, password) {
+  for (const playerName in jsonFile) {
+    const pass = password || jsonFile[playerName].password;
+    if (playerName === nick && jsonFile[playerName].password === pass) {
+      return nick;
+    }
+  }
+  return false;
+}
 
 jsonReader('./serverData/usersData.json', (err, fileData) => {
   if (err) {
@@ -93,7 +102,7 @@ app.post('/getScoreboard', (request, response) => {
     }
     const jsonFile = JSON.parse(fileData);
     const scoreboard = new Array();
-    for (let playerName in jsonFile) {
+    for (const playerName in jsonFile) {
       jsonFile[playerName].sort(byField('time')).reverse();
       const bestTime = jsonFile[playerName][0].time;
       scoreboard.push({ nick: playerName, time: bestTime });
@@ -106,6 +115,57 @@ app.post('/getScoreboard', (request, response) => {
   });
 });
 
+app.post('/checkUserLogAndPass', (request, response) => {
+  fs.readFile('./serverData/accounts.json', (err, fileData) => {
+    if (err) {
+      return 'Error reading file from disk:', err;
+    }
+    const jsonFile = JSON.parse(fileData);
+    const password = request.body.password;
+    const nick = request.body.playerName;
+    const validNick = checkPassANDORLog(jsonFile, nick, password);
+    if (validNick) {
+      response.json({
+        status: 'valid, login successful',
+        nick,
+      });
+    } else {
+      response.json({
+        status: 'invalid, wrong login or password',
+      });
+    }
+    response.end();
+  });
+});
+
+app.post('/regNewUser', (request, response) => {
+  fs.readFile('./serverData/accounts.json', (err, fileData) => {
+    if (err) {
+      return 'Error reading file from disk:', err;
+    }
+    const jsonFile = JSON.parse(fileData);
+    const password = request.body.password;
+    const nick = request.body.playerName;
+    const mail = request.body.mail;
+    const validNick = checkPassANDORLog(jsonFile, nick);
+    if (!validNick) {
+      jsonFile[nick] = { password, mail };
+      fs.writeFile('./serverData/accounts.json', JSON.stringify(jsonFile, null, 2), err => {
+        if (err) console.log('Error writing file:', err);
+      });
+      response.json({
+        status: 'valid, nick free',
+        nick,
+        password,
+      });
+    } else {
+      response.json({
+        status: 'invalid, nick already used',
+      });
+    }
+    response.end();
+  });
+});
 
 app.listen(port, () => {
   console.log('run at ' + port);

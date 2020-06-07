@@ -9,7 +9,7 @@ export default class Player {
     this.hits = new Array();
     this.gameSessions = new Array();
     this.hitsPerSecond = new Array();
-    this.playerName = 'testName';
+    this.playerName = undefined;
   }
 
   getBestResalt() {
@@ -56,6 +56,16 @@ export default class Player {
           console.log(data);
         })
         .catch(err => console.log(err));
+    }
+
+  }
+
+  setNick(nick = undefined) {
+    if (nick !== undefined) {
+      this.playerName = nick;
+      document.getElementById('nick').innerText = nick;
+    } else {
+      document.getElementById('nick').innerText = 'Temporary';
     }
 
   }

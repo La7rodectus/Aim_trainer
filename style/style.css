@@ -1,6 +1,7 @@
 body{
     display: flex;
-    align-items: flex-start;
+    margin: 0px;
+    align-items: center;
     background-image: url(../images/site-bg.jpg);
 }
 
@@ -81,6 +82,7 @@ body{
     width: 100%;
     height: 50vh;
     display: flex;
+    flex-direction: column;
     color: white;
     background-color: transparent;
     border-radius: 50px;
@@ -89,6 +91,11 @@ body{
     justify-self: stretch;
     justify-content: flex-start;
     font-size: 25px;
+
+}
+
+#scoreboard p {
+    margin: 10px;
 }
 
 #res {
@@ -100,12 +107,6 @@ body{
     justify-content: flex-start;
     flex-direction: column;
     font-size: 25px;
-    padding: 10px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    margin: 5px;
-    margin-top: 0px;
     box-shadow: 0 5px 6px rgba(0, 0, 0, .3);
     border-radius: 50px;
     background-color: transparent;
@@ -327,7 +328,6 @@ input {
 
 }
 .input-p {
-   
     color: white;
 }
 
@@ -415,3 +415,58 @@ input[type="checkbox"]:checked + label::before {
     }
 }
 
+#regDiv {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+    background-color: black;
+    opacity: 0.5;
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    color: white;
+}
+
+.reg-cell {
+    width: 15vw;
+    box-shadow: 0 5px 6px black;
+    border-radius: 20px;
+    border-color: white;
+    background-color: black;
+    color: white;
+}
+
+#confirm-btn-reg {
+    height: 5vh;
+}
+
+#reg-btn {
+    height: 5vh;
+}
+
+#msg-reg {
+    display: none;
+    font-size: 20px;
+}
+
+.none {
+    display: none;
+}
+
+#nick {
+    display: flex;
+    justify-content: center;
+    font-family: gameover;
+    font-size: 25px;
+    color: white;
+}
+
+#regHidePar {
+    display: none;
+}

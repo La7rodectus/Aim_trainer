@@ -3,6 +3,15 @@
 //getRandomIntInclusive fn
 import { getRandomIntInclusive } from './library.js';
 
+//byField for array sort
+import { byField } from './library.js';
+
+//change Password and Login borger-color
+import { regCellBorderColor } from './library.js';
+
+//short msg on reg div
+import { regMsg } from './library.js';
+
 //canvas class
 import CanvasClass from './CanvasClass.js';
 
@@ -31,7 +40,7 @@ export default class Game {
     this.pauseDiffId = undefined;
     this.missed = 0;
     this.hits = 0;
-    this.gameStage = 'stop'; // ['stop', 'pause', 'resume', 'play', 'gameover']
+    this.gameStage = 'stop'; // ['stop', 'pause', 'resume', 'play']
   }
 
   ini() {
@@ -39,8 +48,98 @@ export default class Game {
     document.getElementById('stop').onclick = this.stopBTNActivation.bind(this);
     document.getElementById('confirm-btn').onclick = this.setFrontColorStyle.bind(this);
     document.getElementById('checkbox').onclick = this.muteBTNAction.bind(this);
-    this.currentPlayer.getBestResalt();
+    document.getElementById('reg').onclick = this.showReg.bind(this);
+    document.getElementById('confirm-btn-reg').onclick = this.login.bind(this);
+    document.getElementById('reg-btn').onclick = this.regNewUser.bind(this);
+    document.onkeyup = e => (e.key === 'Escape' ? this.hideReg() : false);
+    this.currentPlayer.setNick();
     this.getScoreboard();
+  }
+
+  showReg() {
+    const regDiv = document.getElementById('regDiv');
+    regCellBorderColor();
+    document.getElementById('password').value = '';
+    document.getElementById('login').value = '';
+    regDiv.style.display = 'flex';
+    if (this.gameStage === 'play') {
+      this.pause();
+    }
+  }
+
+  hideReg() {
+    const regDiv = document.getElementById('regDiv');
+    regDiv.style.display = 'none';
+    this.cancelReg();
+  }
+
+  cancelReg() {
+    document.getElementById('confirm-btn-reg').onclick = this.login.bind(this);
+    document.getElementById('confirm-btn-reg').value = 'Sign in';
+    document.getElementById('mail').style.display = 'none';
+    document.getElementById('regHidePar').style.display = 'none';
+  }
+
+  regNewUser() {
+    document.getElementById('confirm-btn-reg').value = 'Cancel';
+    document.getElementById('confirm-btn-reg').onclick = this.cancelReg.bind(this);
+    document.getElementById('mail').style.display = 'block';
+    document.getElementById('regHidePar').style.display = 'block';
+    const mail = document.getElementById('mail').value;
+    const password = document.getElementById('password').value;
+    const login = document.getElementById('login').value;
+    if (login && password && mail) {
+      const sendOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ playerName: `${login}`, password, mail }),
+      };
+      fetch('/regNewUser', sendOptions)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.status === 'valid, nick free') {
+            regCellBorderColor('green');
+            regMsg('Added ' + data.nick + ' glhf');
+            document.getElementById('confirm-btn-reg').style.display = 'block';
+          } else {
+            regCellBorderColor('red');
+          }
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
+  login() {
+    const password = document.getElementById('password').value;
+    const login = document.getElementById('login').value;
+    if (login && password) {
+      const sendOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ playerName: `${login}`, password }),
+      };
+      fetch('/checkUserLogAndPass', sendOptions)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.status === 'valid, login successful') {
+            this.currentPlayer.setNick(data.nick);
+            regCellBorderColor('green');
+            regMsg('Login seccesful, hello ' + data.nick);
+            this.gameReset();
+          } else {
+            regCellBorderColor('red');
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      regCellBorderColor('red');
+    }
   }
 
   getScoreboard() {
@@ -56,8 +155,9 @@ export default class Game {
         console.log(data);
         const scoreboardDiv = document.getElementById('scoreboard');
         scoreboardDiv.innerHTML = '';
+        data.scoreboard.sort(byField('time')).reverse();
         data.scoreboard.forEach(player => {
-          scoreboardDiv.innerHTML += player.nick + ' : ' + player.time + ' sec <br>';
+          scoreboardDiv.innerHTML += '<p>' + player.nick + ' : ' + player.time + ' sec <br>';
         });
       })
       .catch(err => console.log(err));

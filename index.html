@@ -6,11 +6,27 @@
     <link href="./ico/favicon.ico" rel="icon" type="image/x-icon">
   </head>
   <body>
+    <div id="regDiv">
+      <p>Press esc to go back</p>
+      <p>Login<br>
+        <input id="login" class="reg-cell" title="login" type="text" maxlength="20" placeholder="login">
+       </p>
+       <p>Password<br>
+        <input id="password" class="reg-cell" title="password" maxlength="32" placeholder="password" type="password" autocomplete="current-password">
+       </p>
+       <p id="regHidePar">E-mail<br>
+        <input id="mail" class="reg-cell none" title="E-mail" maxlength="32" placeholder="E-mail" type="text">
+       </p>
+       <p><input id="confirm-btn-reg" class="reg-cell" type="button" value="Sign in"></p>
+       <p><input id="reg-btn" class="reg-cell" type="button" value="Registration"></p>
+       <div id="msg-reg"></div>
+    </div>
     <script type="module" src="./scr/script.js"></script>
     <div id="siteWrap">
       <div class="menu">
         <input type="button" id="startStop" value="Start / Pause" class="menu-btn" name="main-menu">
         <input type="button" id="stop" value="Stop" class="menu-btn" name="main-menu">
+        <input type="button" id="reg" value="Reg / Sign in" class="menu-btn" name="main-menu">
         <form id="soundForm">
           <input type="checkbox" id="checkbox">
           <label for="checkbox"></label>
@@ -24,6 +40,7 @@
             <input id="colorfillinput" class="form-cell" type="text" title="Must contain 7 symbols and first one must be #" maxlength="7" placeholder="hex color code" size="40">
            </p>
           <p><input id="confirm-btn" class="form-cell" type="button" value="Confirm"></p>
+          <p id="nick" class="input-p"><br></p>
          </form>
          <div id="message">
           <h3>Hex color code must include:</h3>
@@ -39,10 +56,10 @@
         <div id="pause">Pause <br> shoot to resume </div>
       </div>
       <div id="rightSide">
-        <div id="scoreboard"></div>
         <div id="res">
           <p id="bestTime"></p>
         </div>
+        <div id="scoreboard"></div>
       </div>
     </div>
 
