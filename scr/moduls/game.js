@@ -15,16 +15,22 @@ import Player from './player.js';
 //timer class
 import GameTimer from './gameTimer.js';
 
+//config
+import CONFIG from '../../config.js';
+const ID = CONFIG.id;
+const PATH = CONFIG.path;
+
+
 export default class Game {
   constructor() {
-    this.pauseScreen = document.getElementById('pause');
-    this.overScreen = document.getElementById('game-over');
-    this.hitSound = new Audio('../media/audio/hit.mp3');
-    this.missSound = new Audio('../media/audio/miss.mp3');
+    this.pauseScreen = document.getElementById(ID.pauseScreen_div);
+    this.overScreen = document.getElementById(ID.overScreen_div);
+    this.hitSound = new Audio(PATH.hitSound);
+    this.missSound = new Audio(PATH.missSound);
     this.currentPlayer = new Player();
-    this.front = new CanvasClass('fr_canvas');
-    this.back = new CanvasClass('bg_canvas');
-    this.gameTimer = new GameTimer('timerText');
+    this.front = new CanvasClass(ID.frontCavas_canvas);
+    this.back = new CanvasClass(ID.backCanvas_canvas);
+    this.gameTimer = new GameTimer(ID.gameTimer_div);
     this.currentTimer = 1500;
     this.gameMode = 'challenge';
     this.sound = false;
@@ -38,23 +44,22 @@ export default class Game {
   }
 
   ini() {
-    const confirmBtnReg = document.getElementById('confirm-btn-reg');
-    confirmBtnReg.onclick = () => this.login();
-    document.getElementById('startStop').onclick = () => this.startBTNActivation();
-    document.getElementById('stop').onclick = () => this.gameReset();
-    document.getElementById('confirm-btn').onclick = () => this.setFrontColorStyle();
-    document.getElementById('checkbox').onclick = () => this.muteBTNAction();
-    document.getElementById('reg').onclick = () => this.showReg();
-    document.getElementById('confirm-btn-reg').onclick = () => this.login();
-    document.getElementById('reg-btn').onclick = () => this.openRegFrom();
+    const loginBtn = document.getElementById(ID.login_btn);
+    loginBtn.onclick = () => this.login();
+    document.getElementById(ID.startStop_btn).onclick = () => this.startBTNActivation();
+    document.getElementById(ID.stop_btn).onclick = () => this.gameReset();
+    document.getElementById(ID.confirmColorMenu_btn).onclick = () => this.setFrontColorStyle();
+    document.getElementById(ID.sound_checkbox).onclick = () => this.muteBTNAction();
+    document.getElementById(ID.regMenu_btn).onclick = () => this.showReg();
+    document.getElementById(ID.reg_btn).onclick = () => this.openRegFrom();
     this.currentPlayer.setNick();
     this.getScoreboard();
     document.onkeyup = e => {
       if (e.key === 'Escape') {
         this.hideReg();
-      } else if (e.key === 'Enter' && confirmBtnReg.value === 'Sing in') {
+      } else if (e.key === 'Enter' && loginBtn.value === 'Sing in') {
         this.login();
-      } else if (e.key === 'Enter' && confirmBtnReg.value === 'Cancel') {
+      } else if (e.key === 'Enter' && loginBtn.value === 'Cancel') {
         this.regNewUser();
       }
     };
@@ -65,39 +70,37 @@ export default class Game {
     if (this.gameStage === 'play') {
       this.pause();
     }
-    const regDiv = document.getElementById('regDiv');
+    document.getElementById(ID.reg_div).style.display = 'flex';
     regCellBorderColor();
-    document.getElementById('password').value = '';
-    document.getElementById('login').value = '';
-    regDiv.style.display = 'flex';
-
+    document.getElementById(ID.password_input).value = '';
+    document.getElementById(ID.login_input).value = '';
   }
 
   hideReg() {
-    document.getElementById('regDiv').style.display = 'none';
+    document.getElementById(ID.reg_div).style.display = 'none';
     this.cancelRegFrom();
   }
 
   cancelRegFrom() {
-    document.getElementById('confirm-btn-reg').onclick = () => this.login();
-    document.getElementById('reg-btn').onclick = () => this.openRegFrom();
-    document.getElementById('confirm-btn-reg').value = 'Sign in';
-    document.getElementById('mail').style.display = 'none';
-    document.getElementById('regHidePar').style.display = 'none';
+    document.getElementById(ID.login_btn).onclick = () => this.login();
+    document.getElementById(ID.reg_btn).onclick = () => this.openRegFrom();
+    document.getElementById(ID.login_btn).value = 'Sign in';
+    document.getElementById(ID.mail_input).style.display = 'none';
+    document.getElementById(ID.mail_par).style.display = 'none';
   }
 
   openRegFrom() {
-    document.getElementById('confirm-btn-reg').onclick = () => this.cancelRegFrom();
-    document.getElementById('reg-btn').onclick = () => this.regNewUser();
-    document.getElementById('confirm-btn-reg').value = 'Cancel';
-    document.getElementById('mail').style.display = 'block';
-    document.getElementById('regHidePar').style.display = 'block';
+    document.getElementById(ID.login_btn).onclick = () => this.cancelRegFrom();
+    document.getElementById(ID.reg_btn).onclick = () => this.regNewUser();
+    document.getElementById(ID.login_btn).value = 'Cancel';
+    document.getElementById(ID.mail_input).style.display = 'block';
+    document.getElementById(ID.mail_par).style.display = 'block';
   }
 
   regNewUser() {
-    const mail = document.getElementById('mail').value;
-    const password = document.getElementById('password').value;
-    const login = document.getElementById('login').value;
+    const mail = document.getElementById(ID.mail_input).value;
+    const password = document.getElementById(ID.password_input).value;
+    const login = document.getElementById(ID.login_input).value;
     if (login && password && mail) {
       const sendOptions = {
         method: 'POST',
@@ -113,7 +116,7 @@ export default class Game {
           if (data.status === 'valid, nick free') {
             regCellBorderColor('green');
             regMsg('Added ' + data.nick + ' glhf');
-            document.getElementById('confirm-btn-reg').style.display = 'block';
+            //document.getElementById('confirm-btn-reg').style.display = 'block';
             this.cancelRegFrom();
           } else {
             regCellBorderColor('red');
@@ -126,8 +129,8 @@ export default class Game {
   }
 
   login() {
-    const password = document.getElementById('password').value;
-    const login = document.getElementById('login').value;
+    const password = document.getElementById(ID.password_input).value;
+    const login = document.getElementById(ID.login_input).value;
     if (login && password) {
       const sendOptions = {
         method: 'POST',
@@ -167,7 +170,7 @@ export default class Game {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        const scoreboardDiv = document.getElementById('scoreboard');
+        const scoreboardDiv = document.getElementById(ID.scoreboard_div);
         scoreboardDiv.innerHTML = '';
         data.scoreboard.sort(byField('time')).reverse();
         data.scoreboard.forEach(player => {
@@ -179,11 +182,11 @@ export default class Game {
 
   muteBTNAction() {
     if (this.sound === false) {
-      document.getElementById('tusz').innerText = 'Tyts to turn off sound';
+      document.getElementById(ID.tuts_div).innerText = 'Tyts to turn off sound';
       this.sound = true;
     } else {
       this.sound = false;
-      document.getElementById('tusz').innerText = 'Tyts to turn on sound';
+      document.getElementById(ID.tuts_div).innerText = 'Tyts to turn on sound';
     }
 
   }
@@ -241,7 +244,7 @@ export default class Game {
       this.timerItervalCorrection();
       this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.currentTimer);
     }, pauseTimerDif);
-    this.front.canvas.onclick = () => this.shot();
+    this.front.canvas.onclick = canvas => this.shot(canvas);
     this.hidePauseScreen();
     this.gameOverScreenHide();
     this.animateCircels();
@@ -369,11 +372,11 @@ export default class Game {
   }
 
   setFrontColorStyle() {
-    const inputFillHex = document.getElementById('colorfillinput');
-    const inputBorderHex = document.getElementById('colorborderinput');
-    const message = document.getElementById('message');
-    const sevenSymbols = document.getElementById('seven');
-    const firstSymdol = document.getElementById('first');
+    const inputFillHex = document.getElementById(ID.colorfill_input);
+    const inputBorderHex = document.getElementById(ID.colorborder_inpit);
+    const message = document.getElementById(ID.invalidHexMessage_div);
+    const sevenSymbols = document.getElementById(ID.invalidSeven_par);
+    const firstSymdol = document.getElementById(ID.invalidFirst_par);
     let validarionLevel = 0;
     message.style.display = 'block';
     message.classList.remove('hide');
