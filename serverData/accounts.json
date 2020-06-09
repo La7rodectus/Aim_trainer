@@ -1,6 +1,6 @@
 {
-  "t": {
-    "password": "t",
-    "mail": "t"
+  "ltr": {
+    "password": "admin",
+    "mail": "ltr"
   }
 }

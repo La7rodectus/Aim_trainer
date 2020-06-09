@@ -1,3 +1,901 @@
 {
-  
+  "ltr": [
+    {
+      "time": 7,
+      "hits": 4,
+      "speed": 0.571,
+      "graphHits": [
+        {
+          "x": 340.15048859934853,
+          "y": 313,
+          "target": {
+            "x": 340,
+            "y": 312,
+            "color": "#e098ab",
+            "colorBorder": "#e098ab",
+            "r": 20,
+            "inc": true
+          }
+        },
+        {
+          "x": 385.15048859934853,
+          "y": 135,
+          "target": {
+            "x": 385,
+            "y": 128,
+            "color": "#194c33",
+            "colorBorder": "#194c33",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 222.80239520958088,
+          "y": 273,
+          "target": {
+            "x": 232,
+            "y": 269,
+            "color": "#5b91b1",
+            "colorBorder": "#5b91b1",
+            "r": 21,
+            "inc": true
+          }
+        },
+        {
+          "x": 241.80239520958088,
+          "y": 264,
+          "target": {
+            "x": 242,
+            "y": 264,
+            "color": "#46bc2d",
+            "colorBorder": "#46bc2d",
+            "r": 16,
+            "inc": true
+          }
+        },
+        {
+          "x": 367.8023952095809,
+          "y": 381,
+          "target": {
+            "x": 368,
+            "y": 381,
+            "color": "#71f2ee",
+            "colorBorder": "#71f2ee",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 227.80239520958088,
+          "y": 275,
+          "target": {
+            "x": 227,
+            "y": 279,
+            "color": "#761af6",
+            "colorBorder": "#761af6",
+            "r": 16,
+            "inc": true
+          }
+        }
+      ]
+    },
+    {
+      "time": 6,
+      "hits": 1,
+      "speed": 0.167,
+      "graphHits": [
+        {
+          "x": 303.8023952095809,
+          "y": 206,
+          "target": {
+            "x": 306,
+            "y": 195,
+            "color": "#88c9a8",
+            "colorBorder": "#88c9a8",
+            "r": 19,
+            "inc": true
+          }
+        },
+        {
+          "x": 101.80239520958088,
+          "y": 322,
+          "target": {
+            "x": 97,
+            "y": 321,
+            "color": "#4af88b",
+            "colorBorder": "#4af88b",
+            "r": 23,
+            "inc": true
+          }
+        },
+        {
+          "x": 548.8023952095809,
+          "y": 153,
+          "target": {
+            "x": 551,
+            "y": 155,
+            "color": "#2fd654",
+            "colorBorder": "#2fd654",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 165.80239520958088,
+          "y": 326,
+          "target": {
+            "x": 162,
+            "y": 332,
+            "color": "#62c51e",
+            "colorBorder": "#62c51e",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 436.8023952095809,
+          "y": 126,
+          "target": {
+            "x": 430,
+            "y": 123,
+            "color": "#4437f4",
+            "colorBorder": "#4437f4",
+            "r": 18,
+            "inc": true
+          }
+        },
+        {
+          "x": 114.80239520958088,
+          "y": 49,
+          "target": {
+            "x": 111,
+            "y": 41,
+            "color": "#ac22fd",
+            "colorBorder": "#ac22fd",
+            "r": 25,
+            "inc": false
+          }
+        },
+        {
+          "x": 608.8023952095809,
+          "y": 112,
+          "target": {
+            "x": 610,
+            "y": 103,
+            "color": "#ddab50",
+            "colorBorder": "#ddab50",
+            "r": 22,
+            "inc": true
+          }
+        },
+        {
+          "x": 200.80239520958088,
+          "y": 134,
+          "target": {
+            "x": 191,
+            "y": 126,
+            "color": "#4692a9",
+            "colorBorder": "#4692a9",
+            "r": 18,
+            "inc": true
+          }
+        }
+      ]
+    },
+    {
+      "time": 37,
+      "hits": 51,
+      "speed": 1.378,
+      "graphHits": [
+        {
+          "x": 303.8023952095809,
+          "y": 206,
+          "target": {
+            "x": 306,
+            "y": 195,
+            "color": "#88c9a8",
+            "colorBorder": "#88c9a8",
+            "r": 19,
+            "inc": true
+          }
+        },
+        {
+          "x": 101.80239520958088,
+          "y": 322,
+          "target": {
+            "x": 97,
+            "y": 321,
+            "color": "#4af88b",
+            "colorBorder": "#4af88b",
+            "r": 23,
+            "inc": true
+          }
+        },
+        {
+          "x": 548.8023952095809,
+          "y": 153,
+          "target": {
+            "x": 551,
+            "y": 155,
+            "color": "#2fd654",
+            "colorBorder": "#2fd654",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 165.80239520958088,
+          "y": 326,
+          "target": {
+            "x": 162,
+            "y": 332,
+            "color": "#62c51e",
+            "colorBorder": "#62c51e",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 436.8023952095809,
+          "y": 126,
+          "target": {
+            "x": 430,
+            "y": 123,
+            "color": "#4437f4",
+            "colorBorder": "#4437f4",
+            "r": 18,
+            "inc": true
+          }
+        },
+        {
+          "x": 114.80239520958088,
+          "y": 49,
+          "target": {
+            "x": 111,
+            "y": 41,
+            "color": "#ac22fd",
+            "colorBorder": "#ac22fd",
+            "r": 25,
+            "inc": false
+          }
+        },
+        {
+          "x": 608.8023952095809,
+          "y": 112,
+          "target": {
+            "x": 610,
+            "y": 103,
+            "color": "#ddab50",
+            "colorBorder": "#ddab50",
+            "r": 22,
+            "inc": true
+          }
+        },
+        {
+          "x": 200.80239520958088,
+          "y": 134,
+          "target": {
+            "x": 191,
+            "y": 126,
+            "color": "#4692a9",
+            "colorBorder": "#4692a9",
+            "r": 18,
+            "inc": true
+          }
+        },
+        {
+          "x": 403.8023952095809,
+          "y": 269,
+          "target": {
+            "x": 408,
+            "y": 268,
+            "color": "#f4fd7a",
+            "colorBorder": "#f4fd7a",
+            "r": 23,
+            "inc": true
+          }
+        },
+        {
+          "x": 258.8023952095809,
+          "y": 333,
+          "target": {
+            "x": 263,
+            "y": 331,
+            "color": "#bc35e8",
+            "colorBorder": "#bc35e8",
+            "r": 19,
+            "inc": true
+          }
+        },
+        {
+          "x": 253.80239520958088,
+          "y": 47,
+          "target": {
+            "x": 255,
+            "y": 48,
+            "color": "#dba380",
+            "colorBorder": "#dba380",
+            "r": 25,
+            "inc": true
+          }
+        },
+        {
+          "x": 374.8023952095809,
+          "y": 154,
+          "target": {
+            "x": 376,
+            "y": 153,
+            "color": "#8ff22d",
+            "colorBorder": "#8ff22d",
+            "r": 18,
+            "inc": true
+          }
+        },
+        {
+          "x": 491.8023952095809,
+          "y": 144,
+          "target": {
+            "x": 494,
+            "y": 140,
+            "color": "#9e2e41",
+            "colorBorder": "#9e2e41",
+            "r": 15,
+            "inc": true
+          }
+        },
+        {
+          "x": 178.80239520958088,
+          "y": 358,
+          "target": {
+            "x": 176,
+            "y": 362,
+            "color": "#2abe2a",
+            "colorBorder": "#2abe2a",
+            "r": 15,
+            "inc": true
+          }
+        },
+        {
+          "x": 481.8023952095809,
+          "y": 134,
+          "target": {
+            "x": 483,
+            "y": 140,
+            "color": "#d1984b",
+            "colorBorder": "#d1984b",
+            "r": 13,
+            "inc": true
+          }
+        },
+        {
+          "x": 68.80239520958088,
+          "y": 426,
+          "target": {
+            "x": 67,
+            "y": 428,
+            "color": "#26eb6f",
+            "colorBorder": "#26eb6f",
+            "r": 20,
+            "inc": true
+          }
+        },
+        {
+          "x": 75.80239520958088,
+          "y": 51,
+          "target": {
+            "x": 70,
+            "y": 45,
+            "color": "#c7496c",
+            "colorBorder": "#c7496c",
+            "r": 24,
+            "inc": true
+          }
+        },
+        {
+          "x": 302.8023952095809,
+          "y": 98,
+          "target": {
+            "x": 291,
+            "y": 93,
+            "color": "#52efe9",
+            "colorBorder": "#52efe9",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 441.8023952095809,
+          "y": 190,
+          "target": {
+            "x": 443,
+            "y": 188,
+            "color": "#94f6f9",
+            "colorBorder": "#94f6f9",
+            "r": 15,
+            "inc": true
+          }
+        },
+        {
+          "x": 525.8023952095809,
+          "y": 142,
+          "target": {
+            "x": 530,
+            "y": 135,
+            "color": "#586cca",
+            "colorBorder": "#586cca",
+            "r": 15,
+            "inc": true
+          }
+        },
+        {
+          "x": 315.8023952095809,
+          "y": 362,
+          "target": {
+            "x": 320,
+            "y": 361,
+            "color": "#aeee14",
+            "colorBorder": "#aeee14",
+            "r": 15,
+            "inc": true
+          }
+        },
+        {
+          "x": 451.8023952095809,
+          "y": 219,
+          "target": {
+            "x": 452,
+            "y": 216,
+            "color": "#fec06b",
+            "colorBorder": "#fec06b",
+            "r": 15,
+            "inc": true
+          }
+        },
+        {
+          "x": 81.80239520958088,
+          "y": 237,
+          "target": {
+            "x": 81,
+            "y": 234,
+            "color": "#1f9657",
+            "colorBorder": "#1f9657",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 620.8023952095809,
+          "y": 259,
+          "target": {
+            "x": 618,
+            "y": 257,
+            "color": "#45e857",
+            "colorBorder": "#45e857",
+            "r": 18,
+            "inc": true
+          }
+        },
+        {
+          "x": 70.80239520958088,
+          "y": 344,
+          "target": {
+            "x": 69,
+            "y": 348,
+            "color": "#1d9dc7",
+            "colorBorder": "#1d9dc7",
+            "r": 22,
+            "inc": true
+          }
+        },
+        {
+          "x": 51.80239520958088,
+          "y": 292,
+          "target": {
+            "x": 44,
+            "y": 288,
+            "color": "#ec3367",
+            "colorBorder": "#ec3367",
+            "r": 15,
+            "inc": true
+          }
+        },
+        {
+          "x": 510.8023952095809,
+          "y": 280,
+          "target": {
+            "x": 513,
+            "y": 283,
+            "color": "#1b91ba",
+            "colorBorder": "#1b91ba",
+            "r": 14,
+            "inc": true
+          }
+        },
+        {
+          "x": 339.8023952095809,
+          "y": 400,
+          "target": {
+            "x": 351,
+            "y": 394,
+            "color": "#9a3540",
+            "colorBorder": "#9a3540",
+            "r": 16,
+            "inc": true
+          }
+        },
+        {
+          "x": 155.80239520958088,
+          "y": 420,
+          "target": {
+            "x": 167,
+            "y": 423,
+            "color": "#6f2a2f",
+            "colorBorder": "#6f2a2f",
+            "r": 14,
+            "inc": true
+          }
+        },
+        {
+          "x": 620.8023952095809,
+          "y": 204,
+          "target": {
+            "x": 622,
+            "y": 198,
+            "color": "#c7d55c",
+            "colorBorder": "#c7d55c",
+            "r": 21,
+            "inc": true
+          }
+        },
+        {
+          "x": 676.8023952095809,
+          "y": 113,
+          "target": {
+            "x": 667,
+            "y": 112,
+            "color": "#491daa",
+            "colorBorder": "#491daa",
+            "r": 16,
+            "inc": true
+          }
+        },
+        {
+          "x": 273.8023952095809,
+          "y": 70,
+          "target": {
+            "x": 271,
+            "y": 72,
+            "color": "#cc1c16",
+            "colorBorder": "#cc1c16",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 665.8023952095809,
+          "y": 281,
+          "target": {
+            "x": 662,
+            "y": 286,
+            "color": "#5af378",
+            "colorBorder": "#5af378",
+            "r": 19,
+            "inc": true
+          }
+        },
+        {
+          "x": 204.80239520958088,
+          "y": 77,
+          "target": {
+            "x": 204,
+            "y": 78,
+            "color": "#cb6b7e",
+            "colorBorder": "#cb6b7e",
+            "r": 20,
+            "inc": true
+          }
+        },
+        {
+          "x": 564.8023952095809,
+          "y": 56,
+          "target": {
+            "x": 569,
+            "y": 52,
+            "color": "#dfd62e",
+            "colorBorder": "#dfd62e",
+            "r": 19,
+            "inc": true
+          }
+        },
+        {
+          "x": 512.8023952095809,
+          "y": 380,
+          "target": {
+            "x": 516,
+            "y": 388,
+            "color": "#b3fe24",
+            "colorBorder": "#b3fe24",
+            "r": 19,
+            "inc": true
+          }
+        },
+        {
+          "x": 289.8023952095809,
+          "y": 226,
+          "target": {
+            "x": 290,
+            "y": 221,
+            "color": "#1b578c",
+            "colorBorder": "#1b578c",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 437.8023952095809,
+          "y": 263,
+          "target": {
+            "x": 437,
+            "y": 264,
+            "color": "#c1d8f8",
+            "colorBorder": "#c1d8f8",
+            "r": 14,
+            "inc": true
+          }
+        },
+        {
+          "x": 523.8023952095809,
+          "y": 210,
+          "target": {
+            "x": 526,
+            "y": 207,
+            "color": "#9734fd",
+            "colorBorder": "#9734fd",
+            "r": 14,
+            "inc": true
+          }
+        },
+        {
+          "x": 618.8023952095809,
+          "y": 426,
+          "target": {
+            "x": 619,
+            "y": 429,
+            "color": "#81fc65",
+            "colorBorder": "#81fc65",
+            "r": 18,
+            "inc": true
+          }
+        },
+        {
+          "x": 494.8023952095809,
+          "y": 388,
+          "target": {
+            "x": 496,
+            "y": 387,
+            "color": "#691fcc",
+            "colorBorder": "#691fcc",
+            "r": 18,
+            "inc": true
+          }
+        },
+        {
+          "x": 309.8023952095809,
+          "y": 320,
+          "target": {
+            "x": 308,
+            "y": 317,
+            "color": "#ebe2a9",
+            "colorBorder": "#ebe2a9",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 122.80239520958088,
+          "y": 354,
+          "target": {
+            "x": 119,
+            "y": 353,
+            "color": "#b81826",
+            "colorBorder": "#b81826",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 434.8023952095809,
+          "y": 334,
+          "target": {
+            "x": 434,
+            "y": 328,
+            "color": "#c856bd",
+            "colorBorder": "#c856bd",
+            "r": 17,
+            "inc": true
+          }
+        },
+        {
+          "x": 404.8023952095809,
+          "y": 103,
+          "target": {
+            "x": 403,
+            "y": 104,
+            "color": "#4361b4",
+            "colorBorder": "#4361b4",
+            "r": 16,
+            "inc": true
+          }
+        },
+        {
+          "x": 390.8023952095809,
+          "y": 162,
+          "target": {
+            "x": 391,
+            "y": 164,
+            "color": "#e5eeb2",
+            "colorBorder": "#e5eeb2",
+            "r": 14,
+            "inc": true
+          }
+        },
+        {
+          "x": 653.8023952095809,
+          "y": 181,
+          "target": {
+            "x": 663,
+            "y": 175,
+            "color": "#44a2bd",
+            "colorBorder": "#44a2bd",
+            "r": 19,
+            "inc": true
+          }
+        },
+        {
+          "x": 118.80239520958088,
+          "y": 75,
+          "target": {
+            "x": 118,
+            "y": 73,
+            "color": "#2c6e28",
+            "colorBorder": "#2c6e28",
+            "r": 22,
+            "inc": true
+          }
+        },
+        {
+          "x": 554.8023952095809,
+          "y": 118,
+          "target": {
+            "x": 559,
+            "y": 112,
+            "color": "#5ca742",
+            "colorBorder": "#5ca742",
+            "r": 29,
+            "inc": true
+          }
+        },
+        {
+          "x": 520.8023952095809,
+          "y": 270,
+          "target": {
+            "x": 516,
+            "y": 274,
+            "color": "#a18fe5",
+            "colorBorder": "#a18fe5",
+            "r": 28,
+            "inc": true
+          }
+        },
+        {
+          "x": 371.8023952095809,
+          "y": 407,
+          "target": {
+            "x": 368,
+            "y": 413,
+            "color": "#94bb2f",
+            "colorBorder": "#94bb2f",
+            "r": 27,
+            "inc": true
+          }
+        },
+        {
+          "x": 670.8023952095809,
+          "y": 150,
+          "target": {
+            "x": 664,
+            "y": 145,
+            "color": "#39f7cd",
+            "colorBorder": "#39f7cd",
+            "r": 28,
+            "inc": true
+          }
+        },
+        {
+          "x": 481.8023952095809,
+          "y": 379,
+          "target": {
+            "x": 479,
+            "y": 370,
+            "color": "#cf7884",
+            "colorBorder": "#cf7884",
+            "r": 31,
+            "inc": true
+          }
+        },
+        {
+          "x": 535.8023952095809,
+          "y": 394,
+          "target": {
+            "x": 535,
+            "y": 392,
+            "color": "#f9bfd3",
+            "colorBorder": "#f9bfd3",
+            "r": 28,
+            "inc": true
+          }
+        },
+        {
+          "x": 536.8023952095809,
+          "y": 346,
+          "target": {
+            "x": 526,
+            "y": 348,
+            "color": "#bfa963",
+            "colorBorder": "#bfa963",
+            "r": 24,
+            "inc": true
+          }
+        },
+        {
+          "x": 45.80239520958088,
+          "y": 396,
+          "target": {
+            "x": 44,
+            "y": 396,
+            "color": "#15a7cf",
+            "colorBorder": "#15a7cf",
+            "r": 25,
+            "inc": true
+          }
+        },
+        {
+          "x": 579.8023952095809,
+          "y": 330,
+          "target": {
+            "x": 588,
+            "y": 325,
+            "color": "#406c9d",
+            "colorBorder": "#406c9d",
+            "r": 28,
+            "inc": true
+          }
+        },
+        {
+          "x": 433.8023952095809,
+          "y": 322,
+          "target": {
+            "x": 433,
+            "y": 324,
+            "color": "#f179eb",
+            "colorBorder": "#f179eb",
+            "r": 22,
+            "inc": true
+          }
+        },
+        {
+          "x": 251.80239520958088,
+          "y": 137,
+          "target": {
+            "x": 227,
+            "y": 127,
+            "color": "#9ac547",
+            "colorBorder": "#9ac547",
+            "r": 36,
+            "inc": true
+          }
+        }
+      ]
+    }
+  ]
 }

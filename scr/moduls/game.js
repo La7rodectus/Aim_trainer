@@ -1,16 +1,10 @@
 /* eslint-disable max-len */
 
-//getRandomIntInclusive fn
-import { getRandomIntInclusive } from './library.js';
-
 //byField for array sort
-import { byField } from './library.js';
-
-//change Password and Login borger-color
-import { regCellBorderColor } from './library.js';
-
-//short msg on reg div
-import { regMsg } from './library.js';
+//regCellBorderColor - change Password and Login borger-color
+//regMsg - short msg on reg div
+//getRandomIntInclusive fn
+import { getRandomIntInclusive,  byField, regCellBorderColor, regMsg } from './library.js';
 
 //canvas class
 import CanvasClass from './CanvasClass.js';
@@ -25,13 +19,13 @@ export default class Game {
   constructor() {
     this.pauseScreen = document.getElementById('pause');
     this.overScreen = document.getElementById('game-over');
-    this.hitSound = new Audio('./audio/hit.mp3');
-    this.missSound = new Audio('./audio/miss.mp3');
+    this.hitSound = new Audio('../media/audio/hit.mp3');
+    this.missSound = new Audio('../media/audio/miss.mp3');
     this.currentPlayer = new Player();
     this.front = new CanvasClass('fr_canvas');
     this.back = new CanvasClass('bg_canvas');
     this.gameTimer = new GameTimer('timerText');
-    this.carrentTimer = 1500;
+    this.currentTimer = 1500;
     this.gameMode = 'challenge';
     this.sound = false;
     this.dif = 50;
@@ -44,47 +38,63 @@ export default class Game {
   }
 
   ini() {
-    document.getElementById('startStop').onclick = this.startBTNActivation.bind(this);
-    document.getElementById('stop').onclick = this.stopBTNActivation.bind(this);
-    document.getElementById('confirm-btn').onclick = this.setFrontColorStyle.bind(this);
-    document.getElementById('checkbox').onclick = this.muteBTNAction.bind(this);
-    document.getElementById('reg').onclick = this.showReg.bind(this);
-    document.getElementById('confirm-btn-reg').onclick = this.login.bind(this);
-    document.getElementById('reg-btn').onclick = this.regNewUser.bind(this);
-    document.onkeyup = e => (e.key === 'Escape' ? this.hideReg() : false);
+    const confirmBtnReg = document.getElementById('confirm-btn-reg');
+    confirmBtnReg.onclick = () => this.login();
+    document.getElementById('startStop').onclick = () => this.startBTNActivation();
+    document.getElementById('stop').onclick = () => this.gameReset();
+    document.getElementById('confirm-btn').onclick = () => this.setFrontColorStyle();
+    document.getElementById('checkbox').onclick = () => this.muteBTNAction();
+    document.getElementById('reg').onclick = () => this.showReg();
+    document.getElementById('confirm-btn-reg').onclick = () => this.login();
+    document.getElementById('reg-btn').onclick = () => this.openRegFrom();
     this.currentPlayer.setNick();
     this.getScoreboard();
+    document.onkeyup = e => {
+      if (e.key === 'Escape') {
+        this.hideReg();
+      } else if (e.key === 'Enter' && confirmBtnReg.value === 'Sing in') {
+        this.login();
+      } else if (e.key === 'Enter' && confirmBtnReg.value === 'Cancel') {
+        this.regNewUser();
+      }
+    };
+
   }
 
   showReg() {
+    if (this.gameStage === 'play') {
+      this.pause();
+    }
     const regDiv = document.getElementById('regDiv');
     regCellBorderColor();
     document.getElementById('password').value = '';
     document.getElementById('login').value = '';
     regDiv.style.display = 'flex';
-    if (this.gameStage === 'play') {
-      this.pause();
-    }
+
   }
 
   hideReg() {
-    const regDiv = document.getElementById('regDiv');
-    regDiv.style.display = 'none';
-    this.cancelReg();
+    document.getElementById('regDiv').style.display = 'none';
+    this.cancelRegFrom();
   }
 
-  cancelReg() {
-    document.getElementById('confirm-btn-reg').onclick = this.login.bind(this);
+  cancelRegFrom() {
+    document.getElementById('confirm-btn-reg').onclick = () => this.login();
+    document.getElementById('reg-btn').onclick = () => this.openRegFrom();
     document.getElementById('confirm-btn-reg').value = 'Sign in';
     document.getElementById('mail').style.display = 'none';
     document.getElementById('regHidePar').style.display = 'none';
   }
 
-  regNewUser() {
+  openRegFrom() {
+    document.getElementById('confirm-btn-reg').onclick = () => this.cancelRegFrom();
+    document.getElementById('reg-btn').onclick = () => this.regNewUser();
     document.getElementById('confirm-btn-reg').value = 'Cancel';
-    document.getElementById('confirm-btn-reg').onclick = this.cancelReg.bind(this);
     document.getElementById('mail').style.display = 'block';
     document.getElementById('regHidePar').style.display = 'block';
+  }
+
+  regNewUser() {
     const mail = document.getElementById('mail').value;
     const password = document.getElementById('password').value;
     const login = document.getElementById('login').value;
@@ -104,11 +114,14 @@ export default class Game {
             regCellBorderColor('green');
             regMsg('Added ' + data.nick + ' glhf');
             document.getElementById('confirm-btn-reg').style.display = 'block';
+            this.cancelRegFrom();
           } else {
             regCellBorderColor('red');
           }
         })
         .catch(err => console.log(err));
+    } else {
+      regCellBorderColor('red');
     }
   }
 
@@ -132,6 +145,7 @@ export default class Game {
             regCellBorderColor('green');
             regMsg('Login seccesful, hello ' + data.nick);
             this.gameReset();
+            this.currentPlayer.getBestResalt();
           } else {
             regCellBorderColor('red');
           }
@@ -177,7 +191,7 @@ export default class Game {
   showPauseScreen() {
     this.pauseScreen.style.display = 'inline-flex';
     this.pauseScreen.classList.add('show');
-    this.pauseScreen.onclick = this.resume.bind(this);
+    this.pauseScreen.onclick = () => this.resume();
   }
 
   hidePauseScreen() {
@@ -225,9 +239,9 @@ export default class Game {
       this.back.draw();
       this.front.draw();
       this.timerItervalCorrection();
-      this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
+      this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.currentTimer);
     }, pauseTimerDif);
-    this.front.canvas.onclick = this.shot.bind(this);
+    this.front.canvas.onclick = () => this.shot();
     this.hidePauseScreen();
     this.gameOverScreenHide();
     this.animateCircels();
@@ -238,7 +252,7 @@ export default class Game {
   play() {
     this.currentPlayer.init(this.gameMode);
     if (this.gameMode === 'challenge') {
-      this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
+      this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.currentTimer);
     }
     this.front.canvas.onclick = this.shot.bind(this);
     this.hidePauseScreen();
@@ -290,7 +304,7 @@ export default class Game {
     this.front.canvas.onclick = null;
     this.front.canvas.onmouseleave = null;
     this.gameStage = 'stop';
-    this.carrentTimer = 1500;
+    this.currentTimer = 1500;
     this.back.reset();
     this.front.reset();
     this.gameTimer.stop();
@@ -303,10 +317,6 @@ export default class Game {
     clearTimeout(this.pauseDiffId);
   }
 
-  stopBTNActivation() {
-    this.gameReset();
-  }
-
   mouseOutIvent() {
     if (this.gameStage === 'play') {
       this.pause();
@@ -314,12 +324,12 @@ export default class Game {
   }
 
   timerItervalCorrection() {
-    if (this.carrentTimer > this.dif + 300) {
-      if (this.carrentTimer > 700) {
-        this.carrentTimer -= this.dif;
+    if (this.currentTimer > this.dif + 300) {
+      if (this.currentTimer > 700) {
+        this.currentTimer -= this.dif;
       }
-      if (this.carrentTimer <= 700) {
-        this.carrentTimer -= this.dif / 5;
+      if (this.currentTimer <= 700) {
+        this.currentTimer -= this.dif / 5;
       }
     }
   }
@@ -334,7 +344,7 @@ export default class Game {
     this.back.draw();
     this.front.draw();
     this.timerItervalCorrection();
-    this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.carrentTimer);
+    this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.currentTimer);
   }
 
   animateCircels() {

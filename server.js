@@ -156,7 +156,6 @@ app.post('/regNewUser', (request, response) => {
       response.json({
         status: 'valid, nick free',
         nick,
-        password,
       });
     } else {
       response.json({

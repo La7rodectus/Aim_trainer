@@ -2,7 +2,7 @@ body{
     display: flex;
     margin: 0px;
     align-items: center;
-    background-image: url(../images/site-bg.jpg);
+    background-image: url(../media/img/site-bg.jpg);
 }
 
 #siteWrap {
@@ -327,6 +327,7 @@ input {
     cursor: pointer;
 
 }
+
 .input-p {
     color: white;
 }
@@ -470,3 +471,11 @@ input[type="checkbox"]:checked + label::before {
 #regHidePar {
     display: none;
 }
+
+
+
+
+
+
+
+

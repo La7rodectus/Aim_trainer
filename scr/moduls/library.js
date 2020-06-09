@@ -37,7 +37,7 @@ export function regCellBorderColor(color = 'white') {
     pass.style.borderColor = 'white';
     login.style.borderColor = 'white';
     mail.style.borderColor = 'white';
-  }, 2000);
+  }, 1000);
 }
 
 export function regMsg(text, color = 'green') {
