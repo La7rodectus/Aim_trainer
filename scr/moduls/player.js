@@ -2,6 +2,10 @@
 
 import { printRightSide } from './library.js';
 
+//config
+import CONFIG from '../../config.js';
+const ID = CONFIG.id;
+
 
 export default class Player {
   constructor() {
@@ -63,9 +67,9 @@ export default class Player {
   setNick(nick = undefined) {
     if (nick !== undefined) {
       this.playerName = nick;
-      document.getElementById('nick').innerText = nick;
+      document.getElementById(ID.nick_div).innerText = nick;
     } else {
-      document.getElementById('nick').innerText = 'Temporary';
+      document.getElementById(ID.nick_div).innerText = 'Temporary';
     }
 
   }

@@ -1,3 +1,6 @@
+//config
+import CONFIG from '../../config.js';
+const ID = CONFIG.id;
 
 export function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -6,7 +9,7 @@ export function getRandomIntInclusive(min, max) {
 }
 
 export function printRightSide(res) {
-  const resPlace = document.getElementById('res');
+  const resPlace = document.getElementById(ID.lastSessionRes_div);
   const p = document.createElement('p');
   p.innerHTML = res;
   p.classList.add('parRes');
@@ -22,9 +25,9 @@ export function byField(field) {
 }
 
 export function regCellBorderColor(color = 'white') {
-  const pass = document.getElementById('password');
-  const login = document.getElementById('login');
-  const mail = document.getElementById('mail');
+  const pass = document.getElementById(ID.password_input);
+  const login = document.getElementById(ID.login_input);
+  const mail = document.getElementById(ID.mail_input);
   mail.style.borderColor = color;
   pass.style.borderColor = color;
   login.style.borderColor = color;
@@ -41,7 +44,7 @@ export function regCellBorderColor(color = 'white') {
 }
 
 export function regMsg(text, color = 'green') {
-  const msg = document.getElementById('msg-reg');
+  const msg = document.getElementById(ID.regFormMsg);
   msg.style.color = color;
   msg.innerText = text;
   msg.style.display = 'block';

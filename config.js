@@ -28,5 +28,8 @@ export default {
     'invalidSeven_par': 'seven',
     'invalidFirst_par': 'first',
     'reg_div': 'regDiv',
+    'nick_div': 'nick',
+    'lastSessionRes_div': 'res',
+    'regFormMsg': 'msg-reg',
   }
 };
