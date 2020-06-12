@@ -32,6 +32,7 @@ export default {
     'lastSessionRes_div': 'res',
     'regFormMsg_par': 'msg-reg',
     'logout_btn': 'logout-btn',
+    'bestTime_par': 'bestTime'
   },
   const: {
     generatorTimeout: 1500,

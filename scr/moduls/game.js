@@ -35,7 +35,6 @@ export default class Game {
     this.currentTimer = CONST.generatorTimeout;
     this.gameMode = 'challenge';
     this.sound = false;
-    this.dif = 50;
     this.maxR = 40;
     this.generatorInterval = undefined;
     this.pauseDiffId = undefined;
@@ -56,7 +55,6 @@ export default class Game {
     document.getElementById(ID.logout_btn).onclick = () => this.logout();
     this.currentPlayer.setNick();
     this.getScoreboard();
-    this.currentPlayer.getBestResalt();
     document.onkeyup = e => {
       if (e.key === 'Escape') {
         this.hideReg();
@@ -90,6 +88,7 @@ export default class Game {
     document.getElementById(ID.login_btn).value = 'Sign in';
     document.getElementById(ID.mail_input).style.display = 'none';
     document.getElementById(ID.mail_par).style.display = 'none';
+    document.getElementById(ID.logout_btn).style.display = 'block';
   }
 
   openRegFrom() {
@@ -98,6 +97,7 @@ export default class Game {
     document.getElementById(ID.login_btn).value = 'Cancel';
     document.getElementById(ID.mail_input).style.display = 'block';
     document.getElementById(ID.mail_par).style.display = 'block';
+    document.getElementById(ID.logout_btn).style.display = 'none';
   }
 
   regNewUser() {
@@ -175,7 +175,6 @@ export default class Game {
             regCellBorderColor('green');
             regMsg('Login seccesful, hello ' + data.nick);
             this.gameReset();
-            this.currentPlayer.getBestResalt();
           } else {
             regCellBorderColor('red');
           }
@@ -355,12 +354,12 @@ export default class Game {
   }
 
   timerItervalCorrection() {
-    if (this.currentTimer > this.dif + 300) {
+    if (this.currentTimer > 350) {
       if (this.currentTimer > 700) {
-        this.currentTimer -= this.dif;
+        this.currentTimer -= 50;
       }
       if (this.currentTimer <= 700) {
-        this.currentTimer -= this.dif / 5;
+        this.currentTimer -= 10;
       }
     }
   }

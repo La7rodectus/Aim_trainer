@@ -13,11 +13,11 @@ export default class Player {
     this.hits = new Array();
     this.gameSessions = new Array();
     this.hitsPerSecond = new Array();
-    this.playerName = undefined;
+    this.playerName = 'Temporary';
   }
 
   getBestResalt() {
-    if (this.playerName) {
+    if (this.playerName !== 'Temporary') {
       const sendOptions = {
         method: 'POST',
         headers: {
@@ -30,10 +30,19 @@ export default class Player {
         .then(data => {
           console.log(data);
           const str = ('BestTime = ' + data.bestTime + ' sec');
-          const p = document.getElementById('bestTime');
-          p.innerHTML = str;
+          if (!document.getElementById(ID.bestTime_par)) {
+            const resPlace = document.getElementById(ID.lastSessionRes_div);
+            const p = document.createElement('p');
+            p.id = ID.bestTime_par;
+            p.innerHTML = str;
+            resPlace.append(p);
+          } else {
+            document.getElementById(ID.bestTime_par).innerHTML = str;
+          }
         })
         .catch(err => console.log(err));
+    } else {
+      document.getElementById(ID.bestTime_par).remove();
     }
   }
 
@@ -68,6 +77,7 @@ export default class Player {
     if (nick !== undefined) {
       this.playerName = nick;
       document.getElementById(ID.nick_div).innerText = nick;
+      this.getBestResalt();
     } else {
       const sendOptions = {
         method: 'GET',
@@ -81,6 +91,7 @@ export default class Player {
         .then(data => {
           this.playerName = data.nick;
           document.getElementById(ID.nick_div).innerText = data.nick;
+          this.getBestResalt();
         })
         .catch(err => console.log('can\'t show scoreboard', err));
     }
