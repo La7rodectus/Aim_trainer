@@ -1,0 +1,11 @@
+{
+  "ltr": {
+    "password": "admin",
+    "mail": "ltr"
+  },
+  "currentUser": "Temporary",
+  "t": {
+    "password": "t",
+    "mail": "t"
+  }
+}

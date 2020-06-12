@@ -1,34 +1,34 @@
 
-'use strict';
-/* eslint-disable max-len */
+import { getRandomIntInclusive } from './library.js';
 
-// library
-function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-function print(data, discriptoin) {
-  // eslint-disable-next-line no-undef
-  const datawrap = document.getElementById('text');
-  const string = data.toString();
-  datawrap.innerHTML = string + ' ____' + discriptoin + '<br>';
-
-
-}
-
-
-//canvas class
-
-class CanvasClass {
+export default class CanvasClass {
   constructor(canvasId) {
-    // eslint-disable-next-line no-undef
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d');
-    this.ctx.globalAlpha = 1;
+    this.canvasId = canvasId;
     this.circlesXYandColor = new Array();
-    this.circlesStyles = { colorborder: '#00FF00', colorfill: '#eb4034' };
+    this.circlesStyles = { colorborder: '#000000', colorfill: '#FFFFFF' };
     this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
+    this.lost = 0;
+  }
+
+  radiusAnimationControl(maxR) {
+    this.circlesXYandColor.forEach(circle => {
+      if (circle.r === 2) {
+        circle.inc = true;
+      } else if (circle.r === maxR) {
+        circle.inc = false;
+      }
+      if (circle.inc === true) {
+        circle.r += 1;
+      } else {
+        circle.r -= 1;
+      }
+      if (circle.r < 3) {
+        this.deleteCircle(circle);
+        this.lost += 1;
+      }
+    });
   }
 
   findObjIndex(obj) {
@@ -39,6 +39,10 @@ class CanvasClass {
         return i;
       }
     }
+  }
+
+  getId() {
+    return this.canvasId;
   }
 
   removeCircle(obj) {
@@ -84,7 +88,6 @@ class CanvasClass {
       y: y - bbox.top * (this.canvas.height / bbox.height) };
   }
 
-
   getColorCode() {
     const r = getRandomIntInclusive(0, 255);
     const g = getRandomIntInclusive(0, 255);
@@ -117,7 +120,6 @@ class CanvasClass {
     const b = pixelColorData[2];
     const carrentColor = '#' + r.toString(16) + g.toString(16) + b.toString(16);
     const res = this.findCircleByColor(carrentColor);
-    print(carrentColor, 'this.checkColor');
     return res;
   }
 
@@ -126,85 +128,30 @@ class CanvasClass {
     const colorBorder = this.circlesStyles.colorborder;
     this.circlesXYandColor.push({ x, y, color, colorBorder, r });
     this.usedColors.push(color);
-    //print(color, 'доданий колір');
   }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.resize();
     this.circlesXYandColor.forEach(circle => {
       this.ctx.strokeStyle = circle.colorBorder;
       this.ctx.fillStyle = circle.color;
-      //print(circle.color, 'draw');
       this.ctx.beginPath();
       this.ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
       this.ctx.stroke();
       this.ctx.fill();
     });
   }
+
   deleteCircle(target) {
     this.removeCircle(target);
     this.removeColor(target.color);
   }
-}
 
-
-
-//ini
-const back = new CanvasClass('bg_canvas');
-const front = new CanvasClass('fr_canvas');
-
-
-//generator
-function circlesGenerator(front, back, maxR = 40) {
-  const x = getRandomIntInclusive(maxR, front.canvas.clientWidth - maxR);
-  const y = getRandomIntInclusive(maxR, front.canvas.clientHeight - maxR);
-  const backColor = back.getColorCode();
-  back.setCircleStyle(backColor, backColor);
-  front.addArc(x, y, 40);
-  back.addArc(x, y, 40);
-  back.draw();
-  front.draw();
-}
-//events
-front.canvas.addEventListener('click', (canvas) => {
-  const target = back.checkColor(canvas);
-  if (target !== undefined) {
-    //print(target.color, 'hit');
-    front.deleteCircle(target);
-    back.deleteCircle(target);
+  reset() {
+    this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+    this.circlesXYandColor = new Array();
+    this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
+    this.lost = 0;
   }
-  circlesGenerator(front, back);
-  //print('end', '-------');
-});
-
-front.canvas.addEventListener('contextmenu', (canvas) => {
-  const carrentX = back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).x;
-  const carrentY = back.clientXYToCanvasXY(canvas.clientX, canvas.clientY).y;
-  const pixelColorData = back.ctx.getImageData(carrentX, carrentY, 1, 1).data;
-  const r = pixelColorData[0];
-  const g = pixelColorData[1];
-  const b = pixelColorData[2];
-  const carrentColor = '#' + r.toString(16) + g.toString(16) + b.toString(16);
-  print(carrentColor, 'carrent color');
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}

@@ -1,21 +1,69 @@
 <html>
   <head>
-    <title>canvas</title>
+    <title>AIM_trainer</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="./style/style.css">
+    <link href="./favicon.ico" rel="icon" type="image/x-icon">
   </head>
   <body>
-        
-    <div class="shoot_wraper">
-      <canvas id="bg_canvas"></canvas>
-      <canvas id="fr_canvas"></canvas>
+    <div id="regDiv">
+      <p>Press esc to go back</p>
+      <p>Login<br>
+        <input id="login" class="reg-cell" title="login" type="text" maxlength="20" placeholder="login">
+       </p>
+       <p>Password<br>
+        <input id="password" class="reg-cell" title="password" maxlength="32" placeholder="password" type="password" autocomplete="current-password">
+       </p>
+       <p id="regHidePar">E-mail<br>
+        <input id="mail" class="reg-cell none" title="E-mail" maxlength="32" placeholder="E-mail" type="text">
+       </p>
+       <p><input id="confirm-btn-reg" class="reg-cell" type="button" value="Sign in"></p>
+       <p><input id="reg-btn" class="reg-cell" type="button" value="Registration"></p>
+       <p><input id="logout-btn" class="reg-cell" type="button" value="Logout"></p>
+       <div id="msg-reg"></div>
     </div>
-    <div id="text"></div>
-    <script src="/scr/script_v0.3.js"></script>
+    <script type="module" src="./scr/script.js"></script>
+    <div id="siteWrap">
+      <div class="menu">
+        <input type="button" id="startStop" value="Start / Pause" class="menu-btn" name="main-menu">
+        <input type="button" id="stop" value="Stop" class="menu-btn" name="main-menu">
+        <input type="button" id="reg" value="Reg / Sign in" class="menu-btn" name="main-menu">
+        <form id="soundForm">
+          <input type="checkbox" id="checkbox">
+          <label for="checkbox"></label>
+          <div id="tusz" >Tyts to turn on sound</div>
+        </form>
+         <form name="castom" id="custom" method="post">
+          <p class="input-p" >Enter circle border color<br>
+            <input id="colorborderinput" class="form-cell" title="Must contain 7 symbols and first one must be #" type="text" maxlength="7" placeholder="hex color code" size="40">
+           </p>
+           <p class="input-p">Enter circle color<br>
+            <input id="colorfillinput" class="form-cell" type="text" title="Must contain 7 symbols and first one must be #" maxlength="7" placeholder="hex color code" size="40">
+           </p>
+          <p><input id="confirm-btn" class="form-cell" type="button" value="Confirm"></p>
+          <p id="nick" class="input-p"><br></p>
+         </form>
+         <div id="message">
+          <h3>Hex color code must include:</h3>
+          <p id="seven" class="invalid">Must contain 7 symbols</p>
+          <p id="first" class="invalid">First symbol must be '#'</p>
+        </div>
+      </div>
+      <div class="shoot_wraper">
+        <canvas id="bg_canvas"></canvas>
+        <canvas id="fr_canvas"></canvas>
+        <div id="timer"><p id="timerText">00:00</p></div>
+        <div id="game-over">Game Over</div>
+        <div id="pause">Pause <br> shoot to resume </div>
+      </div>
+      <div id="rightSide">
+        <div id="res">
+          <p id="bestTime"></p>
+        </div>
+        <div id="scoreboard"></div>
+      </div>
+    </div>
+
     </body>
 </html>
-
-
-
-
 
