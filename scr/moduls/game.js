@@ -19,6 +19,7 @@ import GameTimer from './gameTimer.js';
 import CONFIG from '../../config.js';
 const ID = CONFIG.id;
 const PATH = CONFIG.path;
+const CONST = CONFIG.const;
 
 
 export default class Game {
@@ -31,7 +32,7 @@ export default class Game {
     this.front = new CanvasClass(ID.frontCavas_canvas);
     this.back = new CanvasClass(ID.backCanvas_canvas);
     this.gameTimer = new GameTimer(ID.gameTimer_div);
-    this.currentTimer = 1500;
+    this.currentTimer = CONST.generatorTimeout;
     this.gameMode = 'challenge';
     this.sound = false;
     this.dif = 50;
@@ -52,6 +53,7 @@ export default class Game {
     document.getElementById(ID.sound_checkbox).onclick = () => this.muteBTNAction();
     document.getElementById(ID.regMenu_btn).onclick = () => this.showReg();
     document.getElementById(ID.reg_btn).onclick = () => this.openRegFrom();
+    document.getElementById(ID.logout_btn).onclick = () => this.logout();
     this.currentPlayer.setNick();
     this.getScoreboard();
     document.onkeyup = e => {
@@ -109,7 +111,7 @@ export default class Game {
         },
         body: JSON.stringify({ playerName: `${login}`, password, mail }),
       };
-      fetch('/regNewUser', sendOptions)
+      fetch('/registration', sendOptions)
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -128,6 +130,28 @@ export default class Game {
     }
   }
 
+  logout() {
+    const sendOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+    fetch('/logout', sendOptions)
+      .then(response => response.json())
+      .catch(err => console.log('response failed ', err))
+      .then(data => {
+        console.log(data);
+        if (data.status === 'logout successful') {
+          regMsg('Logout seccesful, bb');
+          this.gameReset();
+        } else {
+          console.log('smt went wrong');
+        }
+      })
+      .catch(err => console.log('can\'t do logout actions', err));
+  }
+
   login() {
     const password = document.getElementById(ID.password_input).value;
     const login = document.getElementById(ID.login_input).value;
@@ -139,8 +163,9 @@ export default class Game {
         },
         body: JSON.stringify({ playerName: `${login}`, password }),
       };
-      fetch('/checkUserLogAndPass', sendOptions)
+      fetch('/login', sendOptions)
         .then(response => response.json())
+        .catch(err => console.log('response failed ', err))
         .then(data => {
           console.log(data);
           if (data.status === 'valid, login successful') {
@@ -153,7 +178,7 @@ export default class Game {
             regCellBorderColor('red');
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log('can\'t do login actions', err));
     } else {
       regCellBorderColor('red');
     }
@@ -161,13 +186,14 @@ export default class Game {
 
   getScoreboard() {
     const sendOptions = {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
     };
     fetch('/getScoreboard', sendOptions)
       .then(response => response.json())
+      .catch(err => console.log('response failed ', err))
       .then(data => {
         console.log(data);
         const scoreboardDiv = document.getElementById(ID.scoreboard_div);
@@ -177,7 +203,7 @@ export default class Game {
           scoreboardDiv.innerHTML += '<p>' + player.nick + ' : ' + player.time + ' sec <br>';
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log('can\'t show scoreboard', err));
   }
 
   muteBTNAction() {
@@ -207,12 +233,12 @@ export default class Game {
     if (this.gameStage === 'stop') {
       this.play();
       setTimeout(() => {
-        this.front.canvas.onmouseleave = this.mouseOutIvent.bind(this);
+        this.front.canvas.onmouseleave = () => this.mouseLeaveEvent();
       }, 1000);
     } else if (this.gameStage === 'pause') {
       this.resume();
       setTimeout(() => {
-        this.front.canvas.onmouseleave = this.mouseOutIvent.bind(this);
+        this.front.canvas.onmouseleave = () => this.mouseLeaveEvent();
       }, 1000);
     } else if (this.gameStage === 'play') {
       this.pause();
@@ -257,7 +283,7 @@ export default class Game {
     if (this.gameMode === 'challenge') {
       this.generatorInterval = setTimeout(this.circlesGeneratorChallenge.bind(this), this.currentTimer);
     }
-    this.front.canvas.onclick = this.shot.bind(this);
+    this.front.canvas.onclick = canvas => this.shot(canvas);
     this.hidePauseScreen();
     this.gameOverScreenHide();
     this.animateCircels();
@@ -293,7 +319,7 @@ export default class Game {
     this.overScreen.classList.add('show');
     this.currentPlayer.printResult();
     setTimeout(() => {
-      this.overScreen.onclick = this.startBTNActivation.bind(this);
+      this.overScreen.onclick = () => this.startBTNActivation();
     }, 2000);
   }
 
@@ -307,7 +333,7 @@ export default class Game {
     this.front.canvas.onclick = null;
     this.front.canvas.onmouseleave = null;
     this.gameStage = 'stop';
-    this.currentTimer = 1500;
+    this.currentTimer = CONST.generatorTimeout;
     this.back.reset();
     this.front.reset();
     this.gameTimer.stop();
@@ -320,7 +346,7 @@ export default class Game {
     clearTimeout(this.pauseDiffId);
   }
 
-  mouseOutIvent() {
+  mouseLeaveEvent() {
     if (this.gameStage === 'play') {
       this.pause();
     }

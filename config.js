@@ -30,6 +30,10 @@ export default {
     'reg_div': 'regDiv',
     'nick_div': 'nick',
     'lastSessionRes_div': 'res',
-    'regFormMsg': 'msg-reg',
+    'regFormMsg_par': 'msg-reg',
+    'logout_btn': 'logout-btn',
+  },
+  const: {
+    generatorTimeout: 1500,
   }
 };

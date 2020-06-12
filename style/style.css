@@ -451,6 +451,10 @@ input[type="checkbox"]:checked + label::before {
     height: 5vh;
 }
 
+#logout-btn {
+    height: 5vh;
+}
+
 #msg-reg {
     display: none;
     font-size: 20px;

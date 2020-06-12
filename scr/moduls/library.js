@@ -44,7 +44,7 @@ export function regCellBorderColor(color = 'white') {
 }
 
 export function regMsg(text, color = 'green') {
-  const msg = document.getElementById(ID.regFormMsg);
+  const msg = document.getElementById(ID.regFormMsg_par);
   msg.style.color = color;
   msg.innerText = text;
   msg.style.display = 'block';

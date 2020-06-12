@@ -6,7 +6,6 @@ export default class CanvasClass {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d');
     this.canvasId = canvasId;
-    this.ctx.globalAlpha = 1;
     this.circlesXYandColor = new Array();
     this.circlesStyles = { colorborder: '#000000', colorfill: '#FFFFFF' };
     this.usedColors = ['#00FF00', '#eb4034', '#000000', '#ffffff'];
@@ -17,15 +16,13 @@ export default class CanvasClass {
     this.circlesXYandColor.forEach(circle => {
       if (circle.r === 2) {
         circle.inc = true;
-      }
-      if (circle.r === maxR) {
+      } else if (circle.r === maxR) {
         circle.inc = false;
-      }
-      if (circle.inc === false) {
-        circle.r -= 1;
       }
       if (circle.inc === true) {
         circle.r += 1;
+      } else {
+        circle.r -= 1;
       }
       if (circle.r < 3) {
         this.deleteCircle(circle);

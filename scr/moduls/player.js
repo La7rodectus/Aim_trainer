@@ -69,9 +69,20 @@ export default class Player {
       this.playerName = nick;
       document.getElementById(ID.nick_div).innerText = nick;
     } else {
-      document.getElementById(ID.nick_div).innerText = 'Temporary';
+      const sendOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      };
+      fetch('/getCurrentUser', sendOptions)
+        .then(response => response.json())
+        .catch(err => console.log('response failed ', err))
+        .then(data => {
+          this.setNick(data.nick);
+        })
+        .catch(err => console.log('can\'t show scoreboard', err));
     }
-
   }
 
   playerHealthReset() {

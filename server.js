@@ -43,6 +43,19 @@ function checkPassANDORLog(jsonFile, nick, password) {
   }
   return false;
 }
+function switchCurrentUser(nick = 'Temporary') {
+  jsonReader('./serverData/accounts.json', (err, jsonFile) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    jsonFile.currentUser = nick;
+    fs.writeFile('./serverData/accounts.json', JSON.stringify(jsonFile, null, 2), err => {
+      if (err) console.log('Error writing file:', err);
+    });
+  });
+  return 1;
+}
 
 jsonReader('./serverData/usersData.json', (err, fileData) => {
   if (err) {
@@ -95,7 +108,7 @@ app.post('/getBestRes', (request, response) => {
   console.log(request.body);
 });
 
-app.post('/getScoreboard', (request, response) => {
+app.get('/getScoreboard', (request, response) => {
   fs.readFile('./serverData/usersData.json', (err, fileData) => {
     if (err) {
       return 'Error reading file from disk:', err;
@@ -115,7 +128,7 @@ app.post('/getScoreboard', (request, response) => {
   });
 });
 
-app.post('/checkUserLogAndPass', (request, response) => {
+app.post('/login', (request, response) => {
   fs.readFile('./serverData/accounts.json', (err, fileData) => {
     if (err) {
       return 'Error reading file from disk:', err;
@@ -125,6 +138,7 @@ app.post('/checkUserLogAndPass', (request, response) => {
     const nick = request.body.playerName;
     const validNick = checkPassANDORLog(jsonFile, nick, password);
     if (validNick) {
+      switchCurrentUser(nick);
       response.json({
         status: 'valid, login successful',
         nick,
@@ -138,7 +152,13 @@ app.post('/checkUserLogAndPass', (request, response) => {
   });
 });
 
-app.post('/regNewUser', (request, response) => {
+app.post('/logout', (request, response) => {
+  const status  = switchCurrentUser();
+  status === 1 ? response.json({ status: 'logout successful' }) : response.json({ status: 'logout failed' });
+  response.end();
+});
+
+app.post('/registration', (request, response) => {
   fs.readFile('./serverData/accounts.json', (err, fileData) => {
     if (err) {
       return 'Error reading file from disk:', err;
@@ -162,6 +182,21 @@ app.post('/regNewUser', (request, response) => {
         status: 'invalid, nick already used',
       });
     }
+    response.end();
+  });
+});
+
+app.get('/getCurrentUser', (request, response) => {
+  fs.readFile('./serverData/accounts.json', (err, fileData) => {
+    if (err) {
+      return 'Error reading file from disk:', err;
+    }
+    const jsonFile = JSON.parse(fileData);
+    const nick = jsonFile.currentUser;
+    response.json({
+      status: 'Current user',
+      nick,
+    });
     response.end();
   });
 });
