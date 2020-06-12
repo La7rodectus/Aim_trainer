@@ -56,6 +56,7 @@ export default class Game {
     document.getElementById(ID.logout_btn).onclick = () => this.logout();
     this.currentPlayer.setNick();
     this.getScoreboard();
+    this.currentPlayer.getBestResalt();
     document.onkeyup = e => {
       if (e.key === 'Escape') {
         this.hideReg();
@@ -144,6 +145,7 @@ export default class Game {
         console.log(data);
         if (data.status === 'logout successful') {
           regMsg('Logout seccesful, bb');
+          this.currentPlayer.setNick();
           this.gameReset();
         } else {
           console.log('smt went wrong');

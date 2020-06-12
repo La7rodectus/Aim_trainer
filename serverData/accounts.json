@@ -3,5 +3,9 @@
     "password": "admin",
     "mail": "ltr"
   },
-  "currentUser": "Temporary"
+  "currentUser": "Temporary",
+  "t": {
+    "password": "t",
+    "mail": "t"
+  }
 }

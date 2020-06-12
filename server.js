@@ -82,7 +82,7 @@ app.post('/saveClientData', (request, response) => {
     });
   });
   response.json({
-    status: 'success',
+    status: 'success, data saved',
   });
   response.end();
 

@@ -79,7 +79,8 @@ export default class Player {
         .then(response => response.json())
         .catch(err => console.log('response failed ', err))
         .then(data => {
-          this.setNick(data.nick);
+          this.playerName = data.nick;
+          document.getElementById(ID.nick_div).innerText = data.nick;
         })
         .catch(err => console.log('can\'t show scoreboard', err));
     }
