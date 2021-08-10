@@ -7,7 +7,8 @@
     "express": "^4.17.1"
   },
   "scripts": {
-    "test": "none"
+    "test": "none",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
