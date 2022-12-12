@@ -4,7 +4,7 @@
   "description": "Site for AIM training",
   "main": "index.html",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   },
   "scripts": {
     "test": "none",
